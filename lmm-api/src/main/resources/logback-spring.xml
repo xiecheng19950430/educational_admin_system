@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration>
+<configuration>
+    <!--<appender name="LOGSTASH" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <encoder class="net.logstash.logback.encoder.LogstashEncoder">
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>log/logstash-%d{yyyy-MM-dd}.json</fileNamePattern>
+        </rollingPolicy>
+    </appender>-->
+
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- 日志每天进行rotate -->
+            <!--<fileNamePattern>log/system-%d{yyyy-MM-dd}.%i.log</fileNamePattern>-->
+            <fileNamePattern>log/system-%d{yyyy-MM-dd}.log</fileNamePattern>
+            <!-- 最多30天内日志，日志大小最多1G -->
+            <maxHistory>2</maxHistory>
+            <totalSizeCap>1GB</totalSizeCap>
+            <!--<timeBasedFileNamingAndTriggeringPolicy
+                    class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>1GB</maxFileSize>
+                &lt;!&ndash;<totalSizeCap>1GB</totalSizeCap>&ndash;&gt;
+            </timeBasedFileNamingAndTriggeringPolicy>-->
+        </rollingPolicy>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <!--格式化输出,%d:日期;%thread:线程名;%-5level：级别,从左显示5个字符宽度;%msg:日志消息;%n:换行符-->
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <!--格式化输出,%d:日期;%thread:线程名;%-5level：级别,从左显示5个字符宽度;%msg:日志消息;%n:换行符-->
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <root level="INFO">
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="FILE"/>
+        <!--<appender-ref ref="LOGSTASH"/>-->
+    </root>
+
+    <!--<logger name="com.ebayy.mappers" level="DEBUG">
+        <appender-ref ref="STDOUT"/>
+    </logger>-->
+
+</configuration>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ebay.mappers.GmClassMapper">
+    <resultMap id="baseResultMap" type="com.ebay.models.GmClass">
+        <id property="id" column="id"></id>
+        <result property="classNo" column="classNo"></result>
+        <result property="name" column="name"></result>
+        <result property="year" column="year"></result>
+        <result property="amount" column="amount"></result>
+        <result property="status" column="status"></result>
+        <result property="isDelete" column="isDelete"></result>
+        <result property="teacherId" column="teacherId"></result>
+        <result property="createAt" column="createAt"></result>
+        <result property="updateAt" column="updateAt"></result>
+    </resultMap>
+
+    <select id="getClassList" resultMap="baseResultMap">
+        select *
+        from `gm_class`
+        where 1=1
+        <if test="year != null">and year=#{year}</if>
+        <if test="isDelete != null">and isDelete=#{isDelete}</if>
+        <if test="status != null">and status=#{status}</if>
+        <if test="name != null"> and name like CONCAT('%',#{name},'%')</if>
+        ORDER BY createAt desc
+        <if test="start != null">limit #{start}, #{size}</if>
+    </select>
+
+    <select id="findById" resultMap="baseResultMap">
+        select *
+        from `gm_class`
+        WHERE id=#{id} limit 0,1
+    </select>
+
+    <select id="count" resultType="java.lang.Integer">
+        select count(*)
+        from `gm_class`
+        where 1=1
+        <if test="year != null">and year=#{year}</if>
+        <if test="isDelete != null">and isDelete=#{isDelete}</if>
+        <if test="status != null">and status=#{status}</if>
+        <if test="name != null"> and name like CONCAT('%',#{name},'%')</if>
+    </select>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        insert into gm_class (classNo,name,year,status,amount,createAt
+        <if test="isDelete != null">,isDelete</if>
+        <if test="teacherId != null">,teacherId</if>
+        )
+        values (#{classNo},#{name},#{year},0,50,now()
+        <if test="isDelete != null">,#{isDelete}</if>
+        <if test="teacherId != null">,#{teacherId}</if>
+        )
+    </insert>
+
+    <update id="update">
+        UPDATE gm_class SET teacherId=#{teacherId}, name=#{name},year=#{year},amount=#{amount},status=#{status},updateAt=now()
+        <if test="isDelete != null">,isDelete=#{isDelete}</if>
+        WHERE id=#{id}
+    </update>
+
+</mapper>

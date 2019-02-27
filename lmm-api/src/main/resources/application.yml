@@ -1,0 +1,107 @@
+server:
+  port: 9001
+
+system:
+  giftCoupon-distance: 10
+  arCoupon-search-distance: 10
+  arCoupon-get-distance: 0.5
+  trueVoice-pCategory: 2
+  defalut-head:
+
+shopapp:
+  secret: shopabcdefgh12345678
+
+endpoints:
+  restart:
+    enabled: true
+
+logging:
+  level:
+    org.apache.zookeeper.ClientCnxn: ERROR
+
+
+spring:
+  jackson:
+    default-property-inclusion: non_null
+  thymeleaf:
+    mode: LEGACYHTML5
+
+  datasource:
+    name: old-db
+    driver-class-name: com.mysql.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+    url: jdbc:mysql://114.80.200.31:3306/member?allowMultiQueries=true&useSSL=true
+    username: root
+    password: 11111
+    filters: stat
+    maxActive: 20
+    initialSize: 1
+    maxWait: 60000
+    minIdle: 1
+    timeBetweenEvictionRunsMillis: 60000
+    minEvictableIdleTimeMillis: 300000
+    validationQuery: select 'x'
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+    poolPreparedStatements: true
+    maxOpenPreparedStatements: 20
+
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    pool:
+      max-idle: 8
+
+  rabbitmq:
+      host: 127.0.0.1
+      port: 5672
+      username: guest
+      password: guest
+
+mybatis:
+  type-aliases-package: com.ebay.models
+  check-config-location: true
+  mapper-locations:
+    - classpath:/mappers/*.xml
+
+ons:
+  produce:
+    accessKey: LTAIkOgQrQB7rcVP
+    accessSecret: MyJAZQVTqI1vxxfZlrfAxNLBVESEdR
+
+log4j:
+  logger:
+    com:
+      ibatis:
+        common:
+          jdbc:
+            ScriptRunner: ERROR
+
+#rb:
+#  notifyUrl: http://e616eb99.ngrok.io/rb/result
+#  pubKeyUrl: D:/cert/itrus001.cer
+#  privateKey: D:/cert/itrus001.pfx
+#  url: http://testagentpay.reapal.com/agentpay/
+#  password: 123456
+#  userKey: g0be2385657fa355af68b74e9913a1320af82gb7ae5f580g79bffd04a402ba8f
+#  merchantID: 100000000000147
+#  version: 1.0
+#  charset: UTF-8
+#  signType: MD5
+#rb:
+#  notifyUrl: http://e616eb99.ngrok.io/rb/result
+#  pubKeyUrl: D:/cert/rongbao.cer
+#  privateKey: D:/cert/user-rsa.pfx
+#  url: https://agentpay.reapal.com/
+#  password: 168888
+#  userKey: ac4bd559gd9gfa4gdebbbdf2gb746gf80be8e50987cfge79fa192fe4b2ad817f
+#  merchantID: 100000001301712
+#  version: 1.0
+#  charset: UTF-8
+#  signType: MD5
+
+
+
+
+
