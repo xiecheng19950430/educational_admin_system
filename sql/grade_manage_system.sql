@@ -30,7 +30,7 @@ CREATE TABLE `gm_class`  (
   `status` int(11) DEFAULT NULL COMMENT '班级状态，0:在校，1：已毕业',
   `createAt` datetime(0) DEFAULT NULL,
   `updateAt` datetime(0) DEFAULT NULL,
-  `teacherId` int(11) NOT NULL COMMENT '教师Id',
+  `teacherId` int(11)  COMMENT '教师Id',
   `isDelete` int(11) DEFAULT NULL COMMENT '是否删除，1：删除，0：未删除',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;

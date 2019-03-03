@@ -30,9 +30,12 @@ spring:
     name: old-db
     driver-class-name: com.mysql.jdbc.Driver
     type: com.alibaba.druid.pool.DruidDataSource
-    url: jdbc:mysql://114.80.200.31:3306/member?allowMultiQueries=true&useSSL=true
+    url: jdbc:mysql://127.0.0.1:3306/gm?allowMultiQueries=true&useSSL=true
     username: root
-    password: 11111
+    password: 123456
+    #    url: jdbc:mysql://114.80.200.31:3306/member?allowMultiQueries=true&useSSL=true
+    #    username: root
+    #    password: 11111
     filters: stat
     maxActive: 20
     initialSize: 1
@@ -54,10 +57,10 @@ spring:
       max-idle: 8
 
   rabbitmq:
-      host: 127.0.0.1
-      port: 5672
-      username: guest
-      password: guest
+    host: 127.0.0.1
+    port: 5672
+    username: guest
+    password: guest
 
 mybatis:
   type-aliases-package: com.ebay.models
@@ -78,29 +81,9 @@ log4j:
           jdbc:
             ScriptRunner: ERROR
 
-#rb:
-#  notifyUrl: http://e616eb99.ngrok.io/rb/result
-#  pubKeyUrl: D:/cert/itrus001.cer
-#  privateKey: D:/cert/itrus001.pfx
-#  url: http://testagentpay.reapal.com/agentpay/
-#  password: 123456
-#  userKey: g0be2385657fa355af68b74e9913a1320af82gb7ae5f580g79bffd04a402ba8f
-#  merchantID: 100000000000147
-#  version: 1.0
-#  charset: UTF-8
-#  signType: MD5
-#rb:
-#  notifyUrl: http://e616eb99.ngrok.io/rb/result
-#  pubKeyUrl: D:/cert/rongbao.cer
-#  privateKey: D:/cert/user-rsa.pfx
-#  url: https://agentpay.reapal.com/
-#  password: 168888
-#  userKey: ac4bd559gd9gfa4gdebbbdf2gb746gf80be8e50987cfge79fa192fe4b2ad817f
-#  merchantID: 100000001301712
-#  version: 1.0
-#  charset: UTF-8
-#  signType: MD5
-
+app:
+  secret: 1
+  sign-skip: true
 
 
 

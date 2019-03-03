@@ -28,17 +28,17 @@ import java.util.stream.Stream;
 @Component
 public class SignInterceptor extends HandlerInterceptorAdapter {
 
-    @Value("${app.secret}")
-    private String AppSecret;
-    @Value("${app.sign-skip}")
-    private Boolean signSkip;
+		@Value("${app.secret}")
+		private String AppSecret;
+		@Value("${app.sign-skip}")
+		private Boolean signSkip;
 
-    private List<String> EXCLUED_KEYS = Collections.singletonList("sign");
+		private List<String> EXCLUED_KEYS = Collections.singletonList("sign");
 
-    Logger logger = LoggerFactory.getLogger(SignInterceptor.class);
+		Logger logger = LoggerFactory.getLogger(SignInterceptor.class);
 
-    @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+		@Override
+		public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 
 
         /*InputStream is = request.getInputStream();
@@ -50,92 +50,95 @@ public class SignInterceptor extends HandlerInterceptorAdapter {
 
         System.out.println(res);*/
 
-        HandlerMethod method = (HandlerMethod) handler;
-        if (method.getMethodAnnotation(NoSign.class) != null) {
-            return true;
-        }
+				HandlerMethod method = (HandlerMethod) handler;
+				if (method.getMethodAnnotation(NoSign.class) != null) {
+						return true;
+				}
 
 
-        Map<String, String[]> params = request.getParameterMap();
+				Map<String, String[]> params = request.getParameterMap();
 
 
-        if ("/user/check_verify".equals(request.getServletPath())) {
-            return true;
-        }
+				if ("/user/check_verify".equals(request.getServletPath())) {
+						return true;
+				}
 
-        if ("/rb/result".equals(request.getServletPath())) {
-            return true;
-        }
+				if ("/rb/result".equals(request.getServletPath())) {
+						return true;
+				}
 
-        if (signSkip && ArrayUtils.isNotEmpty(params.get("_xyz"))) {
-            return true;
-        }
+				if (signSkip) {
+						return true;
+				}
+//        if (signSkip && ArrayUtils.isNotEmpty(params.get("_xyz"))) {
+//            return true;
+//        }
 
-        String[] signs = params.get("sign");
-        if (ArrayUtils.isEmpty(signs)) {
-            throw new SignException("miss sign [" + request.getRequestURI() + "]");
-        }
-        String sign = signs[0];
+				String[] signs = params.get("sign");
+				if (ArrayUtils.isEmpty(signs)) {
+						throw new SignException("miss sign [" + request.getRequestURI() + "]");
+				}
+				String sign = signs[0];
 
-        String[] keys = params.keySet().toArray(new String[]{});
-        Arrays.sort(keys);
+				String[] keys = params.keySet().toArray(new String[]{});
+				Arrays.sort(keys);
 
-        String[] values = Stream.of(keys).map(key -> {
-            if (!excludeKey(key) && ArrayUtils.isNotEmpty(params.get(key))) {
-                return key + "=" + params.get(key)[0];
-            } else {
-                return null;
-            }
-        }).filter(Objects::nonNull).collect(Collectors.toList()).toArray(new String[]{});
+				String[] values = Stream.of(keys).map(key -> {
+						if (!excludeKey(key) && ArrayUtils.isNotEmpty(params.get(key))) {
+								return key + "=" + params.get(key)[0];
+						} else {
+								return null;
+						}
+				}).filter(Objects::nonNull).collect(Collectors.toList()).toArray(new String[]{});
 
-        String signString = String.join("&", values) + AppSecret;
-        String sign2 = DigestUtils.md5Hex(signString);
+				String signString = String.join("&", values) + AppSecret;
+				String sign2 = DigestUtils.md5Hex(signString);
 
-        //logger.info("sign [" + signString + "]  = " + sign2 + ",sign [ get ] = " + sign);
-        //System.out.println("sign [" + signString + "]  = " + sign2);
+				//logger.info("sign [" + signString + "]  = " + sign2 + ",sign [ get ] = " + sign);
+				//System.out.println("sign [" + signString + "]  = " + sign2);
 
-        if (Objects.equals(sign, sign2)) {
-            return true;
-        } else {
-            throw new SignException("error sign [" + request.getRequestURI() + "]");
-        }
-    }
+				if (Objects.equals(sign, sign2)) {
+						return true;
+				} else {
+						throw new SignException("error sign [" + request.getRequestURI() + "]");
+				}
+		}
 
-    public static final byte[] readBytes(InputStream is, int contentLen) throws IOException {
-        if (contentLen > 0) {
-            int readLen = 0;
+		public static final byte[] readBytes(InputStream is, int contentLen) throws IOException {
+				if (contentLen > 0) {
+						int readLen = 0;
 
-            int readLengthThisTime = 0;
+						int readLengthThisTime = 0;
 
-            byte[] message = new byte[contentLen];
+						byte[] message = new byte[contentLen];
 
-            try {
+						try {
 
-                while (readLen != contentLen) {
+								while (readLen != contentLen) {
 
-                    readLengthThisTime = is.read(message, readLen, contentLen
-                            - readLen);
+										readLengthThisTime = is.read(message, readLen, contentLen
+												- readLen);
 
-                    if (readLengthThisTime == -1) {// Should not happen.
-                        break;
-                    }
+										if (readLengthThisTime == -1) {// Should not happen.
+												break;
+										}
 
-                    readLen += readLengthThisTime;
-                }
+										readLen += readLengthThisTime;
+								}
 
-                return message;
-            } catch (IOException e) {
-                // Ignore
-                // e.printStackTrace();
-            } finally {
-                is.close();
-            }
-        }
+								return message;
+						} catch (IOException e) {
+								// Ignore
+								// e.printStackTrace();
+						} finally {
+								is.close();
+						}
+				}
 
-        return new byte[]{};
-    }
+				return new byte[]{};
+		}
 
-    private boolean excludeKey(String key) {
-        return StringUtils.isEmpty(key) || EXCLUED_KEYS.contains(key);
-    }
+		private boolean excludeKey(String key) {
+				return StringUtils.isEmpty(key) || EXCLUED_KEYS.contains(key);
+		}
 }

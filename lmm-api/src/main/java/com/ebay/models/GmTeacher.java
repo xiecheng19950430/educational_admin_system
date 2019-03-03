@@ -18,6 +18,7 @@ public class GmTeacher {
     private String position;
     private String phone;
     private String roleName; //系统管理员systemAdmin，教务管理员educationAdmin,教学领导teachLeader，班主任headmaster,教师teacher
+    private String role; //系统管理员systemAdmin，教务管理员educationAdmin,教学领导teachLeader，班主任headmaster,教师teacher
     private Date createAt;
     private Date updateAt;
     private Integer isDelete;
