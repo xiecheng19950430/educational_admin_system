@@ -1,11 +1,11 @@
 package com.ebay.models;
 
-import lombok.Data;
+import lombok.*;
 
 @Data
-public class UserRole {
+public class TeacherRoleRelation {
 		private Integer id;
+		private String teacherId;
 		private String role;
 		private String roleName;
-		private String moduleUrls;
 }

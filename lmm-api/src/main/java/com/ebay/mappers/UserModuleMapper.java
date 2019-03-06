@@ -24,4 +24,7 @@ public interface UserModuleMapper {
 
 		@Select("select * from user_module where id=#{id} ")
 		UserModule findById(Integer id);
+
+		@Select("select * from user_module where pid=#{pid} ")
+		List<UserModule> queryByPid(int pid);
 }

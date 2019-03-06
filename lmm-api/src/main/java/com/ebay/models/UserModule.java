@@ -10,5 +10,6 @@ public class UserModule {
 		private String moduleName;
 		private String url;
 		private Integer pid;
-		private List<UserModule> childModules;
+
+		private List<UserModule> children;
 }

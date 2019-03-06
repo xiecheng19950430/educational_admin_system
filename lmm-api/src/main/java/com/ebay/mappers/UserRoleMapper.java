@@ -14,12 +14,12 @@ public interface UserRoleMapper {
 		@Select("select * from user_role")
 		List<UserRole> query();
 
-		@Update("update user_role set roleName=#{roleName} ,moduleIds=#{moduleIds} where role=#{role} ")
+		@Update("update user_role set roleName=#{roleName} ,moduleUrls=#{moduleUrls} where role=#{role} ")
 		int update(UserRole userRole);
 
 		@Delete("delete from user_role where id=#{id} ")
 		int delete(int id);
 
-		@Insert("insert into user_role(role,roleName,moduleIds) values (#{role} ,#{roleName} ,#{moduleIds} ) ")
+		@Insert("insert into user_role(role,roleName,moduleUrls) values (#{role} ,#{roleName} ,#{moduleUrls} ) ")
 		int insert(UserRole userRole);
 }

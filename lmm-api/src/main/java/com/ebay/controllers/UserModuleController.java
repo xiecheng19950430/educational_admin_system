@@ -42,7 +42,7 @@ public class UserModuleController {
 		private void setTree(List<UserModule> list, List<UserModule> pModules) {
 				pModules.forEach(pModule -> {
 						List<UserModule> childes = list.stream().filter(module -> Objects.equals(pModule.getId(), module.getPid())).collect(Collectors.toList());
-						pModule.setChildModules(childes);
+						pModule.setChildren(childes);
 						if (!CollectionUtils.isEmpty(childes)) this.setTree(list, childes);
 				});
 		}
@@ -52,7 +52,6 @@ public class UserModuleController {
 		@RequestMapping("/save")
 		@ResponseBody
 		public Result save(UserModule module) {
-				if (StringUtils.isEmpty(module.getUrl())) return Result.fail("参数错误：路径不得为空");
 				UserModule old = service.findById(module.getId());
 				int n;
 				if (ObjectUtils.isEmpty(old)) {
@@ -66,12 +65,14 @@ public class UserModuleController {
 				return n > 0 ? Result.success() : Result.fail("操作失败");
 		}
 
-		//逻辑删除
+		//删除
 		@RequestMapping("/delete")
 		@ResponseBody
 		public Result delete(@RequestParam int id) {
-				int n = service.delete(id);
+//				同时删除子模块
+				service.deleteWithChildren(id);
 				return Result.success();
 		}
+
 
 }
