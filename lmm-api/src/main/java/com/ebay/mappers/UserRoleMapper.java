@@ -22,4 +22,12 @@ public interface UserRoleMapper {
 
 		@Insert("insert into user_role(role,roleName,moduleUrls) values (#{role} ,#{roleName} ,#{moduleUrls} ) ")
 		int insert(UserRole userRole);
+
+		@Select("select * from user_role where id=#{id} ")
+		UserRole findById(int id);
+
+		@Select("select * from user_role ur " +
+				"left join teacher_role_relation trr on trr.roleId=ur.id " +
+				"where trr.teacherId=#{teacherId} ")
+		List<UserRole> queryByTeacherId(int teacherId);
 }

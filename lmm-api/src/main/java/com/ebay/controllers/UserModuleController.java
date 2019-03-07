@@ -2,7 +2,6 @@ package com.ebay.controllers;
 
 import com.ebay.common.Result;
 import com.ebay.common.utils.BeanUtil;
-import com.ebay.common.utils.StringUtils;
 import com.ebay.models.UserModule;
 import com.ebay.services.UserModuleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +19,7 @@ import java.util.stream.Collectors;
 public class UserModuleController {
 		@Autowired
 		private UserModuleService service;
+
 
 		//列表
 		@RequestMapping("/list")
@@ -71,6 +71,7 @@ public class UserModuleController {
 		public Result delete(@RequestParam int id) {
 //				同时删除子模块
 				service.deleteWithChildren(id);
+
 				return Result.success();
 		}
 

@@ -32,4 +32,12 @@ public class UserRoleService {
     public int delete(int id) {
         return mapper.delete(id);
     }
+
+    public UserRole findById(int id) {
+        return mapper.findById(id);
+    }
+
+    public List<UserRole> queryByTeacherId(Integer teacherId) {
+        return mapper.queryByTeacherId(teacherId);
+    }
 }

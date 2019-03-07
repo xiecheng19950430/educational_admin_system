@@ -12,6 +12,8 @@ import java.util.List;
 public class UserModuleService {
 		@Autowired
 		private UserModuleMapper mapper;
+		@Autowired
+		private RoleModuleRelationService roleModuleRelationService;
 
 		public UserModule findByUrl(String url) {
 				return mapper.findByUrl(url);
@@ -39,9 +41,15 @@ public class UserModuleService {
 						children.forEach(m -> this.deleteWithChildren(m.getId()));
 				}
 				mapper.delete(id);
+				//				清理授权角色关系
+				roleModuleRelationService.deleteByModuleId(id);
 		}
 
 		public UserModule findById(Integer id) {
 				return mapper.findById(id);
+		}
+
+		public List<UserModule> queryByTeacherId(int teacherId) {
+				return mapper.queryByTeacherId(teacherId);
 		}
 }

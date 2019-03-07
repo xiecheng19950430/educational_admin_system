@@ -8,4 +8,5 @@ public class UserRole {
 		private String role;
 		private String roleName;
 		private String moduleUrls;
+		private Integer moduleId;
 }

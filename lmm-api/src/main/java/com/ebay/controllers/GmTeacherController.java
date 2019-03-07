@@ -3,19 +3,17 @@ package com.ebay.controllers;
 import com.ebay.common.Result;
 import com.ebay.common.utils.BeanUtil;
 import com.ebay.common.utils.MD5Util;
-import com.ebay.models.GmTeacher;
-import com.ebay.services.GmTeacherService;
-import com.ebay.services.IimportService;
+import com.ebay.models.*;
+import com.ebay.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.ObjectUtils;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.text.ParseException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/gm_teacher")
@@ -24,6 +22,12 @@ public class GmTeacherController {
 		private GmTeacherService service;
 		@Autowired
 		private IimportService iimportService;
+		@Autowired
+		private TeacherRoleRelationService teacherRoleRelationService;
+		@Autowired
+		private UserModuleService userModuleService;
+		@Autowired
+		private UserRoleService userRoleService;
 
 		//列表
 		@RequestMapping("/list")
@@ -86,6 +90,16 @@ public class GmTeacherController {
 				if (gmTeacher.getIsDelete() != null && gmTeacher.getIsDelete() == 1) {
 						return Result.fail("该账号已停用，请联系管理员");
 				}
+				//获取角色role
+				List<UserRole> roleList = userRoleService.queryByTeacherId(gmTeacher.getId());
+				List<String> roles = roleList.stream().map(UserRole::getRole).collect(Collectors.toList());
+				gmTeacher.setRoles(roles);
+
+				//获取授权的模块url
+				List<UserModule> moduleList = userModuleService.queryByTeacherId(gmTeacher.getId());
+				List<String> urls = moduleList.stream().map(UserModule::getUrl).collect(Collectors.toList());
+				gmTeacher.setUrls(urls);
+
 				return Result.success(gmTeacher);
 		}
 
@@ -101,6 +115,10 @@ public class GmTeacherController {
 						old.setIsDelete(1);
 						int r = service.update(old);
 				}
+
+				//删除关联的角色授权
+				teacherRoleRelationService.deleteByTeacherId(id);
+
 				return Result.success();
 		}
 
@@ -153,5 +171,21 @@ public class GmTeacherController {
 				return Result.success();
 		}
 
+		//		授权
+		@RequestMapping("/auth")
+		@ResponseBody
+		public Result authRole(@RequestParam int id, String roleIdsStr) {
+				GmTeacher teacher = service.findById(id);
+				if (ObjectUtils.isEmpty(teacher)) return Result.fail("未找到该教师");
+				//全删
+				teacherRoleRelationService.deleteByTeacherId(id);
+				// 全增
+				String[] roleIds = roleIdsStr.split(",");
+				for (String roleId : roleIds) {
+						Result result = teacherRoleRelationService.insert(id, Integer.valueOf(roleId));
+						if (!result.isSuccess()) return result;
+				}
+				return Result.success();
+		}
 
 }

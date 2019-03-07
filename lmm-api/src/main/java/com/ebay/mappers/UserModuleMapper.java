@@ -27,4 +27,11 @@ public interface UserModuleMapper {
 
 		@Select("select * from user_module where pid=#{pid} ")
 		List<UserModule> queryByPid(int pid);
+
+		@Select("select um.* from user_module um " +
+				"left join role_module_relation rmr on rmr.moduleId=um.id" +
+				"left join user_role ur on ur.id=rmr.roleId" +
+				"left join teacher_role_relation trr on trr.roleId=ur.id" +
+				"where trr.teacherId=#{teacherId} ")
+		List<UserModule> queryByTeacherId(int teacherId);
 }

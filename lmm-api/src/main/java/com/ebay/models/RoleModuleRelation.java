@@ -3,8 +3,8 @@ package com.ebay.models;
 import lombok.*;
 
 @Data
-public class TeacherRoleRelation {
+public class RoleModuleRelation {
 		private Integer id;
-		private Integer teacherId;
 		private Integer roleId;
+		private String moduleId;
 }
