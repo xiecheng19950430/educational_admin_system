@@ -6,5 +6,5 @@ import lombok.*;
 public class RoleModuleRelation {
 		private Integer id;
 		private Integer roleId;
-		private String moduleId;
+		private Integer moduleId;
 }

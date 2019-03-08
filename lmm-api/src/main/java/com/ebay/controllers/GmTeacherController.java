@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.text.ParseException;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Controller
@@ -91,15 +92,20 @@ public class GmTeacherController {
 				if (gmTeacher.getIsDelete() != null && gmTeacher.getIsDelete() == 1) {
 						return Result.fail("该账号已停用，请联系管理员");
 				}
-				//获取角色role
-				List<UserRole> roleList = userRoleService.queryByTeacherId(gmTeacher.getId());
-				List<String> roles = roleList.stream().map(UserRole::getRole).collect(Collectors.toList());
-				gmTeacher.setRoles(roles);
 
-				//获取授权的模块url
-				List<UserModule> moduleList = userModuleService.queryByTeacherId(gmTeacher.getId());
-				List<String> urls = moduleList.stream().map(UserModule::getUrl).collect(Collectors.toList());
-				gmTeacher.setUrls(urls);
+				//超管无限制
+				if (!Objects.equals("superAdmin", gmTeacher.getRole())) {
+						//获取角色role
+						List<UserRole> roleList = userRoleService.queryByTeacherId(gmTeacher.getId());
+						List<String> roles = roleList.stream().map(UserRole::getRole).collect(Collectors.toList());
+						gmTeacher.setRoles(roles);
+
+						//获取授权的模块url
+						List<UserModule> moduleList = userModuleService.queryByTeacherId(gmTeacher.getId());
+						List<String> urls = moduleList.stream().map(UserModule::getUrl).collect(Collectors.toList());
+						gmTeacher.setUrls(urls);
+				}
+
 
 				return Result.success(gmTeacher);
 		}
@@ -181,12 +187,15 @@ public class GmTeacherController {
 				//全删
 				teacherRoleRelationService.deleteByTeacherId(id);
 				// 全增
-				roleIdsStr = StringUtils.isEmpty(roleIdsStr) ? "" : roleIdsStr;
-				String[] roleIds = roleIdsStr.split(",");
-				for (String roleId : roleIds) {
-						Result result = teacherRoleRelationService.insert(id, Integer.valueOf(roleId));
-						if (!result.isSuccess()) return result;
+				if (!StringUtils.isEmpty(roleIdsStr)) {
+						String[] roleIds = roleIdsStr.split(",");
+						for (String roleId : roleIds) {
+								Result result = teacherRoleRelationService.insert(id, Integer.valueOf(roleId));
+								if (!result.isSuccess()) return result;
+						}
 				}
+				teacher.setRole(roleIdsStr);
+				service.update(teacher);
 				return Result.success();
 		}
 

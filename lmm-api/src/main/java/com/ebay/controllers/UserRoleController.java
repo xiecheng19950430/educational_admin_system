@@ -37,7 +37,6 @@ public class UserRoleController {
 		public Result save(UserRole userRole) {
 				if (StringUtils.isEmpty(userRole.getRole())) return Result.fail("参数错误：角色代码不得为空");
 				UserRole old = service.findByRole(userRole.getRole());
-				Integer id = old.getId();
 				if (ObjectUtils.isEmpty(old)) {
 						//新增
 						service.insert(userRole);

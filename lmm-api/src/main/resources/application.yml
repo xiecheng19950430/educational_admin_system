@@ -1,5 +1,5 @@
 server:
-  port: 9001
+  port: 8090
 
 system:
   giftCoupon-distance: 10

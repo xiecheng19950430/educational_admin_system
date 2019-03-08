@@ -52,12 +52,14 @@ public class UserRoleService {
 				//全删
 				roleModuleRelationService.deleteByRoleId(userRole.getId());
 				// 全增
-				moduleIdsStr = StringUtils.isEmpty(moduleIdsStr) ? "" : moduleIdsStr;
-				String[] moduleIds = moduleIdsStr.split(",");
-				for (String moduleId : moduleIds) {
-						Result result = roleModuleRelationService.insert(userRole.getId(), Integer.valueOf(moduleId));
-						if (!result.isSuccess()) return result;
+				if (!StringUtils.isEmpty(moduleIdsStr)) {
+						String[] moduleIds = moduleIdsStr.split(",");
+						for (String moduleId : moduleIds) {
+								Result result = roleModuleRelationService.insert(userRole.getId(), Integer.valueOf(moduleId));
+								if (!result.isSuccess()) return result;
+						}
 				}
+
 				return Result.success();
 		}
 }

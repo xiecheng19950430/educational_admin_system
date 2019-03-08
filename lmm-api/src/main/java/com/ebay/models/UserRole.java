@@ -9,10 +9,9 @@ public class UserRole {
 		private String roleName;
 
 		private String moduleIds;
-
+		private String moduleUrls;
 
 		//弃用
-		private String moduleUrls;
 		private Integer moduleId;
 
 }

@@ -26,8 +26,10 @@ public class GmTeacher {
 		private List<String> urls;
 		private List<String> roles;
 
+		//超级管理员为superAdmin，其他为角色id（多个用’，'隔开）
+		private String role; //系统管理员systemAdmin，教务管理员educationAdmin,教学领导teachLeader，班主任headmaster,教师teacher
+
 		//弃用
 		private String roleName; //系统管理员systemAdmin，教务管理员educationAdmin,教学领导teachLeader，班主任headmaster,教师teacher
-		private String role; //系统管理员systemAdmin，教务管理员educationAdmin,教学领导teachLeader，班主任headmaster,教师teacher
 
 }

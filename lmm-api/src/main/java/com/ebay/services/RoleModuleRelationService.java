@@ -30,7 +30,7 @@ public class RoleModuleRelationService {
 				//新增
 				RoleModuleRelation relation = new RoleModuleRelation();
 				relation.setRoleId(roleId);
-				relation.setRoleId(moduleId);
+				relation.setModuleId(moduleId);
 				mapper.insert(relation);
 				return Result.success();
 		}
