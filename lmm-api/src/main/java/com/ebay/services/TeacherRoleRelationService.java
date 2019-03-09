@@ -2,11 +2,12 @@ package com.ebay.services;
 
 import com.ebay.common.Result;
 import com.ebay.mappers.TeacherRoleRelationMapper;
-import com.ebay.models.TeacherRoleRelation;
-import com.ebay.models.UserRole;
+import com.ebay.models.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
+
+import java.util.Objects;
 
 @Service
 public class TeacherRoleRelationService {
@@ -14,6 +15,8 @@ public class TeacherRoleRelationService {
 		private TeacherRoleRelationMapper mapper;
 		@Autowired
 		private UserRoleService userRoleService;
+		@Autowired
+		private GmTeacherService teacherService;
 
 		public Result insert(int teacherId, int roleId) {
 				UserRole role = userRoleService.findById(roleId);
@@ -33,4 +36,5 @@ public class TeacherRoleRelationService {
 		public void deleteByRoleId(int roleId) {
 				mapper.deleteByRoleId(roleId);
 		}
+
 }

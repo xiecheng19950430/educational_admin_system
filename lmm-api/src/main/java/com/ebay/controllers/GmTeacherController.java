@@ -13,8 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.text.ParseException;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Controller
@@ -70,6 +69,9 @@ public class GmTeacherController {
 						String pwd = MD5Util.encode("123456");
 						gmTeacher.setPassword(pwd);
 				}
+				//默认角色teacher
+				gmTeacher.setRole("teacher");
+
 				int r = service.insert(gmTeacher);
 				return Result.success();
 		}
@@ -187,15 +189,37 @@ public class GmTeacherController {
 				//全删
 				teacherRoleRelationService.deleteByTeacherId(id);
 				// 全增
+				List<UserRole> roleList = userRoleService.query();
+				List<String> roleNames = new ArrayList<>();
 				if (!StringUtils.isEmpty(roleIdsStr)) {
 						String[] roleIds = roleIdsStr.split(",");
 						for (String roleId : roleIds) {
 								Result result = teacherRoleRelationService.insert(id, Integer.valueOf(roleId));
 								if (!result.isSuccess()) return result;
+								roleList.stream()
+										.filter(userRole -> userRole.getId() == Integer.valueOf(roleId))
+										.findAny()
+										.ifPresent(role -> roleNames.add(role.getRoleName()));
 						}
 				}
-				teacher.setRole(roleIdsStr);
+				teacher.setRoleIds(roleIdsStr);
+				String roleNamesStr = String.join(",", roleNames);
+				teacher.setRoleNames(roleNamesStr);
+				//清理默认角色，后续权限根据授权角色来
+				teacher.setRole(null);
 				service.update(teacher);
+				return Result.success();
+		}
+
+		//		批量授权
+		@RequestMapping("/auth/batch")
+		@ResponseBody
+		public Result batchAuthRole(@RequestParam String teacherIds, String roleIds) {
+				String[] tids = teacherIds.split(",");
+				for (String teacherId : tids) {
+						Result result = this.authRole(Integer.valueOf(teacherId), roleIds);
+						if (!result.isSuccess()) return result;
+				}
 				return Result.success();
 		}
 

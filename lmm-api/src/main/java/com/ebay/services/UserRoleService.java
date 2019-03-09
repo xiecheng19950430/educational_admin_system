@@ -26,7 +26,6 @@ public class UserRoleService {
 		}
 
 		public List<UserRole> query() {
-
 				return mapper.query();
 		}
 
