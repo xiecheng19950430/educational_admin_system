@@ -148,6 +148,8 @@ create table user_module
   pid        int          null comment '父模块'
 )
   charset = utf8;
+-- 现有模块
+-- insert into user_module(moduleName, url) values ('', '');
 
 
 -- ----------------------------
@@ -161,10 +163,17 @@ create table user_role
   role       varchar(50)  not null comment '角色代码',
   roleName   varchar(50)  null comment '角色名',
   moduleIds  varchar(500)  null comment '模块Ids',
-  moduleUrls varchar(500) null comment '模块路径'
+  moduleUrls varchar(500) null comment '模块路径',
+  type  int null comment '类型1：系统角色（不可更改），2自定义角色'
 )
   charset = utf8;
 
+-- 系统角色
+insert into user_role(role, roleName,type) values ('systemAdmin', '系统管理员',1);
+insert into user_role(role, roleName,type) values ('educationAdmin', '教务管理员',1);
+insert into user_role(role, roleName,type) values ('teachLeader', '教学领导',1);
+insert into user_role(role, roleName,type) values ('headmaster', '班主任',1);
+insert into user_role(role, roleName,type) values ('teacher', '教师',1);
 
 
 DROP TABLE IF EXISTS `role_module_relation`;
@@ -175,6 +184,7 @@ create table role_module_relation
   roleId   int null,
   moduleId int null
 );
+
 DROP TABLE IF EXISTS `teacher_role_relation`;
 create table teacher_role_relation
 (

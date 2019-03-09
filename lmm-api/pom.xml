@@ -87,11 +87,11 @@
             <version>3.0.1</version>
         </dependency>
 
-        <dependency>
-            <groupId>alipay</groupId>
-            <artifactId>alipay-sdk</artifactId>
-            <version>20170117151523</version>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>alipay</groupId>-->
+            <!--<artifactId>alipay-sdk</artifactId>-->
+            <!--<version>20170117151523</version>-->
+        <!--</dependency>-->
 
         <dependency>
             <groupId>mysql</groupId>
@@ -112,17 +112,17 @@
         </dependency>
 
         <!-- aliyun -->
-        <dependency>
-            <groupId>com.aliyun.openservices</groupId>
-            <artifactId>ons-client</artifactId>
-            <version>1.2.7.Final</version>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>com.aliyun.openservices</groupId>-->
+            <!--<artifactId>ons-client</artifactId>-->
+            <!--<version>1.2.7.Final</version>-->
+        <!--</dependency>-->
 
-        <dependency>
-            <groupId>com.gexin.platform</groupId>
-            <artifactId>gexin-rp-sdk-http</artifactId>
-            <version>4.0.1.7</version>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>com.gexin.platform</groupId>-->
+            <!--<artifactId>gexin-rp-sdk-http</artifactId>-->
+            <!--<version>4.0.1.7</version>-->
+        <!--</dependency>-->
 
         <dependency>
             <groupId>com.squareup.okhttp3</groupId>
