@@ -69,8 +69,6 @@ public class GmTeacherController {
 						String pwd = MD5Util.encode("123456");
 						gmTeacher.setPassword(pwd);
 				}
-				//默认角色teacher
-				gmTeacher.setRole("teacher");
 
 				int r = service.insert(gmTeacher);
 				return Result.success();
