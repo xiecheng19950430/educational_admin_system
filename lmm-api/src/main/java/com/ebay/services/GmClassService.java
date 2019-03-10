@@ -39,4 +39,12 @@ public class GmClassService {
     public int delete(int id){
         return mapper.deleteById(id);
     }
+
+    public void deleteByYear(int year) {
+        mapper.deleteByYear(year);
+    }
+
+    public Integer getLatestClassNo() {
+        return mapper.getLatestClassNo();
+    }
 }

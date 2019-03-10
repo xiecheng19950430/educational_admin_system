@@ -96,7 +96,7 @@ public class GmTeacherController {
 				//超管无限制
 				if (!Objects.equals("superAdmin", gmTeacher.getRole())) {
 //						如果未有绑定角色，以默认为准
-						if (StringUtils.isEmpty(gmTeacher.getRoleIds()) && StringUtils.isEmpty(gmTeacher.getRole())) {
+						if (!StringUtils.isEmpty(gmTeacher.getRole()) && StringUtils.isEmpty(gmTeacher.getRoleIds())) {
 								UserRole role = userRoleService.findByRole(gmTeacher.getRole());
 								if (!ObjectUtils.isEmpty(role)) {
 										List<String> roles = new ArrayList<>();
