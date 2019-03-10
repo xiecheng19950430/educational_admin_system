@@ -52,4 +52,8 @@ public class UserModuleService {
 		public List<UserModule> queryByTeacherId(int teacherId) {
 				return mapper.queryByTeacherId(teacherId);
 		}
+
+		public List<UserModule> queryByRoleId(int roleId) {
+				return mapper.queryByRoleId(roleId);
+		}
 }

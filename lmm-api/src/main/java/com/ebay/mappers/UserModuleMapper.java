@@ -34,4 +34,9 @@ public interface UserModuleMapper {
 				"left join teacher_role_relation trr on trr.roleId=ur.id " +
 				"where trr.teacherId=#{teacherId} ")
 		List<UserModule> queryByTeacherId(int teacherId);
+
+		@Select("select * from user_module um " +
+				"left join role_module_relation rmr on rmr.moduleId=um.id " +
+				"where rmr.roleId=#{roleId} ")
+		List<UserModule> queryByRoleId(int roleId);
 }

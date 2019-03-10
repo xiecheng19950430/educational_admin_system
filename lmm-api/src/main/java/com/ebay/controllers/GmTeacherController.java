@@ -95,15 +95,30 @@ public class GmTeacherController {
 
 				//超管无限制
 				if (!Objects.equals("superAdmin", gmTeacher.getRole())) {
-						//获取角色role
-						List<UserRole> roleList = userRoleService.queryByTeacherId(gmTeacher.getId());
-						List<String> roles = roleList.stream().map(UserRole::getRole).collect(Collectors.toList());
-						gmTeacher.setRoles(roles);
+//						如果未有绑定角色，以默认为准
+						if (StringUtils.isEmpty(gmTeacher.getRoleIds()) && StringUtils.isEmpty(gmTeacher.getRole())) {
+								UserRole role = userRoleService.findByRole(gmTeacher.getRole());
+								if (!ObjectUtils.isEmpty(role)) {
+										List<String> roles = new ArrayList<>();
+										roles.add(role.getId().toString());
+										gmTeacher.setRoles(roles);
 
-						//获取授权的模块url
-						List<UserModule> moduleList = userModuleService.queryByTeacherId(gmTeacher.getId());
-						List<String> urls = moduleList.stream().map(UserModule::getUrl).collect(Collectors.toList());
-						gmTeacher.setUrls(urls);
+										List<UserModule> moduleList = userModuleService.queryByRoleId(role.getId());
+										List<String> urls = moduleList.stream().map(UserModule::getUrl).collect(Collectors.toList());
+										gmTeacher.setUrls(urls);
+								}
+						} else {
+								//获取角色role
+								List<UserRole> roleList = userRoleService.queryByTeacherId(gmTeacher.getId());
+								List<String> roles = roleList.stream().map(UserRole::getRole).collect(Collectors.toList());
+								gmTeacher.setRoles(roles);
+
+								//获取授权的模块url
+								List<UserModule> moduleList = userModuleService.queryByTeacherId(gmTeacher.getId());
+								List<String> urls = moduleList.stream().map(UserModule::getUrl).collect(Collectors.toList());
+								gmTeacher.setUrls(urls);
+						}
+
 				}
 
 
@@ -203,8 +218,6 @@ public class GmTeacherController {
 				teacher.setRoleIds(roleIdsStr);
 				String roleNamesStr = String.join(",", roleNames);
 				teacher.setRoleNames(roleNamesStr);
-				//清理默认角色，后续权限根据授权角色来
-				teacher.setRole(null);
 				service.update(teacher);
 				return Result.success();
 		}
