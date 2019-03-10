@@ -112,22 +112,24 @@ CREATE TABLE `gm_student`  (
 DROP TABLE IF EXISTS `gm_teacher`;
 create table gm_teacher
 (
-  id       int auto_increment
+  id        int auto_increment
     primary key,
-  workNo   varchar(50)  null comment '工号',
-  name     varchar(100) null comment '姓名',
-  loginId  varchar(50)  not null comment '登陆账号',
-  password varchar(50)  null comment '登陆密码',
-  sex      varchar(11)  null comment '性别',
-  birthday datetime     null comment '出生日期',
-  hiredate datetime     null comment '入职日期',
-  position varchar(50)  null comment '职称',
-  phone    varchar(50)  null comment '联系电话',
-  createAt datetime     null,
-  updateAt datetime     null,
-  role     varchar(500)  null comment '角色，超级管理员为superAdmin，其他为角色id（多个用"，"隔开）,班主任classTeacher，系统管理员sysAdmin,教务管理员eduAdmin，教学领导teachLeader',
-  isDelete int          null comment '是否删除，1：删除，0：未删除',
-  classId  int          null comment '班级Id'
+  workNo    varchar(50)  null comment '工号',
+  name      varchar(100) null comment '姓名',
+  loginId   varchar(50)  not null comment '登陆账号',
+  password  varchar(50)  null comment '登陆密码',
+  sex       varchar(11)  null comment '性别',
+  birthday  datetime     null comment '出生日期',
+  hiredate  datetime     null comment '入职日期',
+  position  varchar(50)  null comment '职称',
+  phone     varchar(50)  null comment '联系电话',
+  createAt  datetime     null,
+  updateAt  datetime     null,
+  role      varchar(500) null comment '角色，超级管理员为superAdmin，其他为角色id（多个用"，"隔开）,班主任classTeacher，系统管理员sysAdmin,教务管理员eduAdmin，教学领导teachLeader',
+  isDelete  int          null comment '是否删除，1：删除，0：未删除',
+  classId   int          null comment '班级Id',
+  roleIds   varchar(500) null comment '绑定角色id，多个用“，”隔开',
+  roleNames varchar(500) null comment '绑定角色名称，多个用“，”隔开'
 )
   charset = utf8;
 
