@@ -34,10 +34,10 @@ public class GmTeacherController {
 		@RequestMapping("/list")
 		@ResponseBody
 		public Result getTeacherList(Integer isDelete,
-																 String name,
-																 String workNo,
-																 Integer page,
-																 Integer size) {
+									 String name,
+									 String workNo,
+									 Integer page,
+									 Integer size) {
 				//默认非删除
 				if (isDelete == null)
 						isDelete = 0;
@@ -148,10 +148,17 @@ public class GmTeacherController {
 		@RequestMapping("/update")
 		@ResponseBody
 		public Result update(GmTeacher gmTeacher) {
-				GmTeacher old = service.findById(gmTeacher.getId());
+			GmTeacher old = service.findById(gmTeacher.getId());
+			int n;
+			if (ObjectUtils.isEmpty(old)) {
+				//新增
+				n = service.insert(gmTeacher);
+			} else {
+				//修改
 				BeanUtil.copyNotNullBean(gmTeacher, old);
-				int r = service.update(old);
-				return Result.success();
+				n = service.update(old);
+			}
+			return n > 0 ? Result.success() : Result.fail("操作失败");
 		}
 
 		//通过主键查询教师信息
@@ -193,7 +200,7 @@ public class GmTeacherController {
 				return Result.success();
 		}
 
-		//		授权
+		//授权
 		@RequestMapping("/auth")
 		@ResponseBody
 		public Result authRole(@RequestParam int id, String roleIdsStr) {

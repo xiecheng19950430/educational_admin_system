@@ -10,17 +10,17 @@ import java.util.List;
 @Mapper
 public interface GmTeacherMapper {
 
-    List<GmTeacher> getTeacherList(@Param("classId") Integer classId,@Param("workNo") String workNo,@Param("isDelete") Integer isDelete,
-                                   @Param("name") String name,@Param("start") Integer start,@Param("size") Integer size);
+    List<GmTeacher> getTeacherList(@Param("classId") Integer classId, @Param("workNo") String workNo, @Param("isDelete") Integer isDelete,
+																	 @Param("name") String name, @Param("start") Integer start, @Param("size") Integer size);
 
-    GmTeacher findByClassId(@Param("classId") Integer classId,@Param("role") String role);
+    GmTeacher findByClassId(@Param("classId") Integer classId, @Param("role") String role);
 
     GmTeacher findByLoginId(@Param("loginId") String loginId);
 
     GmTeacher findById(@Param("id") Integer id);
 
-    int count(@Param("workNo") String workNo,@Param("isDelete") Integer isDelete,
-              @Param("name") String name);
+    int count(@Param("workNo") String workNo, @Param("isDelete") Integer isDelete,
+							@Param("name") String name);
 
     int insert(GmTeacher gmTeacher);
 

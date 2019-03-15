@@ -3,6 +3,7 @@ package com.ebay.services;
 import com.alibaba.fastjson.JSON;
 import com.ebay.common.utils.StringUtils;
 import com.ebay.mappers.ExcelMapper;
+import com.ebay.models.GmCourse;
 import com.ebay.models.GmTeacher;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFDateUtil;
@@ -72,6 +73,86 @@ public class IimportService {
                 //工号
                 String workNo = getCellValue(row.getCell(0));
                 teacher.setWorkNo(workNo);
+                //姓名
+                String name = getCellValue(row.getCell(1));
+                teacher.setName(name);
+                //登陆账号
+                String loginId = getCellValue(row.getCell(2));
+                teacher.setLoginId(loginId);
+                //登陆密码
+                String password = getCellValue(row.getCell(3));
+                teacher.setPassword(password);
+                //性别
+                String sex = getCellValue(row.getCell(4));
+                teacher.setSex(sex);
+                //生日
+                String birthday = getCellValue(row.getCell(5));
+                if(!StringUtils.isEmpty(birthday)){
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                    teacher.setBirthday(sdf.parse(birthday));
+                }
+                //入职日期
+                String hiredate = getCellValue(row.getCell(6));
+                if(!StringUtils.isEmpty(hiredate)){
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                    teacher.setHiredate(sdf.parse(hiredate));
+                }//职称
+                String position = getCellValue(row.getCell(7));
+                if(!StringUtils.isEmpty(position)){
+                    teacher.setPosition(position);
+                }
+                //联系电话
+                String phone = getCellValue(row.getCell(8));
+                if(!StringUtils.isEmpty(phone)){
+                    teacher.setPhone(phone);
+                }
+                teacherList.add(teacher);
+            }
+        }
+        excelMapper.batchTeacherInsert(teacherList);  //  批量插入 五秒完成
+        long endTime = System.currentTimeMillis();
+        long totaltime = endTime - startTime;
+        logger.info("【消耗时间为】{}",totaltime);  //  将近两万条数据 3秒解析完成
+        logger.info("【第一条数据为】{}",JSON.toJSON(teacherList.get(0)));
+        return rows;
+    }
+
+
+    public Integer importCourseExcel(MultipartFile courseFile)  throws ParseException {
+        //1.  使用HSSFWorkbook 打开或者创建 “Excel对象”
+        //2.  用HSSFWorkbook返回对象或者创建sheet对象
+        //3.  用sheet返回行对象，用行对象得到Cell对象
+        //4.  对Cell对象进行读写
+        List<GmCourse> courseList = new ArrayList<>();
+        Workbook workbook = null;
+        String courseFileName = courseFile.getOriginalFilename();//  获取文件名
+        logger.info("【courseFileName】{}",courseFileName);
+        if (courseFileName.endsWith(XLS))
+        {
+            try {
+                workbook = new HSSFWorkbook(courseFile.getInputStream());//  2003版本
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        if(courseFileName.endsWith(XLSX)) {
+            try {
+                workbook = new XSSFWorkbook(courseFile.getInputStream());//  2007版本
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        Sheet sheet = workbook.getSheet("sheet2");
+        int rows = sheet.getLastRowNum();
+        logger.info("【rows】{}",rows);
+        long startTime = System.currentTimeMillis();
+        for(int i = 1;i<= rows+1;i++){
+            Row row = sheet.getRow(i);
+            if(row !=null){
+                GmCourse course = new GmCourse();
+                //工号
+                String workNo = getCellValue(row.getCell(0));
+                course.setWorkNo(workNo);
                 //姓名
                 String name = getCellValue(row.getCell(1));
                 teacher.setName(name);

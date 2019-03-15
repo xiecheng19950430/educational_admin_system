@@ -33,6 +33,7 @@ public class TeacherRoleRelationService {
 				mapper.deleteByTeacherId(teacherId);
 		}
 
+
 		public void deleteByRoleId(int roleId) {
 				mapper.deleteByRoleId(roleId);
 		}
