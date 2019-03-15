@@ -29,15 +29,17 @@ public class GmTeacherController {
 		private UserModuleService userModuleService;
 		@Autowired
 		private UserRoleService userRoleService;
+		@Autowired
+		private GmClassHasGmTeacherService gmClassHasGmTeacherService;
 
 		//列表
 		@RequestMapping("/list")
 		@ResponseBody
 		public Result getTeacherList(Integer isDelete,
-									 String name,
-									 String workNo,
-									 Integer page,
-									 Integer size) {
+																 String name,
+																 String workNo,
+																 Integer page,
+																 Integer size) {
 				//默认非删除
 				if (isDelete == null)
 						isDelete = 0;
@@ -148,17 +150,17 @@ public class GmTeacherController {
 		@RequestMapping("/update")
 		@ResponseBody
 		public Result update(GmTeacher gmTeacher) {
-			GmTeacher old = service.findById(gmTeacher.getId());
-			int n;
-			if (ObjectUtils.isEmpty(old)) {
-				//新增
-				n = service.insert(gmTeacher);
-			} else {
-				//修改
-				BeanUtil.copyNotNullBean(gmTeacher, old);
-				n = service.update(old);
-			}
-			return n > 0 ? Result.success() : Result.fail("操作失败");
+				GmTeacher old = service.findById(gmTeacher.getId());
+				int n;
+				if (ObjectUtils.isEmpty(old)) {
+						//新增
+						n = service.insert(gmTeacher);
+				} else {
+						//修改
+						BeanUtil.copyNotNullBean(gmTeacher, old);
+						n = service.update(old);
+				}
+				return n > 0 ? Result.success() : Result.fail("操作失败");
 		}
 
 		//通过主键查询教师信息
@@ -178,27 +180,27 @@ public class GmTeacherController {
 		}
 
 
-		//添加班主任，展示教师列表
-		@RequestMapping("/head/list")
-		@ResponseBody
-		public Result list(int classId) {
-				List<GmTeacher> list = service.getTeacherList(classId, null, 0, null, null, null);
-				return Result.build().put("list", list).result();
-		}
+//		//添加班主任，展示教师列表
+//		@RequestMapping("/head/list")
+//		@ResponseBody
+//		public Result list(int classId) {
+//				List<GmTeacher> list = service.getTeacherList(classId, null, 0, null, null, null);
+//				return Result.build().put("list", list).result();
+//		}
 
-		//绑定班级班主任信息
-		@RequestMapping("/bindHeadmaster")
-		@ResponseBody
-		public Result bindHeadmaster(int classId) {
-				GmTeacher gmTeacher = service.findByClassId(classId, "headmaster");
-				if (ObjectUtils.isEmpty(gmTeacher)) {
-						gmTeacher.setRoleName("headmaster");
-						service.update(gmTeacher);
-				} else {
-						return Result.fail("该班级已绑定班主任信息!");
-				}
-				return Result.success();
-		}
+//		//绑定班级班主任信息
+//		@RequestMapping("/bindHeadmaster")
+//		@ResponseBody
+//		public Result bindHeadmaster(int classId) {
+//				GmTeacher gmTeacher = service.findByClassId(classId, "headmaster");
+//				if (ObjectUtils.isEmpty(gmTeacher)) {
+//						gmTeacher.setRoleName("headmaster");
+//						service.update(gmTeacher);
+//				} else {
+//						return Result.fail("该班级已绑定班主任信息!");
+//				}
+//				return Result.success();
+//		}
 
 		//授权
 		@RequestMapping("/auth")
@@ -240,5 +242,32 @@ public class GmTeacherController {
 				}
 				return Result.success();
 		}
+
+		//获取班级对应教师信息
+		@RequestMapping("/list/classId")
+		@ResponseBody
+		public Result queryByClassId(@RequestParam int classId) {
+				List<GmTeacher> teacherList = service.queryByClassId(classId);
+				return Result.success(teacherList);
+		}
+
+		//教师关联班级
+		@RequestMapping("/bind/class")
+		@ResponseBody
+		public Result bindClass(@RequestParam String teacherIds, String classIds) {
+				String[] tids = teacherIds.split(",");
+				for (String teacherId : tids) {
+						//全删全曾
+						gmClassHasGmTeacherService.deleteByTeacherId(Integer.valueOf(teacherId));
+						if (!StringUtils.isEmpty(classIds)) {
+								String[] cIds = classIds.split(",");
+								for (String classId : cIds) {
+										gmClassHasGmTeacherService.save(Integer.valueOf(teacherId), Integer.valueOf(classId));
+								}
+						}
+				}
+				return Result.success();
+		}
+
 
 }

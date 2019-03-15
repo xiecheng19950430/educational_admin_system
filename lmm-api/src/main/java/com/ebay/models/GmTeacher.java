@@ -8,7 +8,6 @@ import java.util.List;
 @Data
 public class GmTeacher {
 		private Integer id;
-		private Integer classId;
 		private String workNo;
 		private String name;
 		private String loginId;

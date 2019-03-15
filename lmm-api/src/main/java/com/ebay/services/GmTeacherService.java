@@ -48,4 +48,9 @@ public class GmTeacherService {
 		public int delete(int id) {
 				return mapper.deleteById(id);
 		}
+
+		public List<GmTeacher> queryByClassId(int classId) {
+				return mapper.queryByClassId(classId);
+
+		}
 }

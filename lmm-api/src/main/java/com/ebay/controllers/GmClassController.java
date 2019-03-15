@@ -2,10 +2,11 @@ package com.ebay.controllers;
 
 import com.ebay.common.Result;
 import com.ebay.common.utils.BeanUtil;
-import com.ebay.models.GmClass;
-import com.ebay.services.GmClassService;
+import com.ebay.models.*;
+import com.ebay.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Calendar;
@@ -16,6 +17,12 @@ import java.util.List;
 public class GmClassController {
 		@Autowired
 		private GmClassService service;
+		@Autowired
+		private GmTeacherService gmTeacherService;
+		@Autowired
+		private TeacherRoleRelationService teacherRoleRelationService;
+		@Autowired
+		private UserRoleService userRoleService;
 
 		//列表
 		@RequestMapping("/list")
@@ -74,22 +81,6 @@ public class GmClassController {
 						this.generateClass(num, "三", year, startNum);
 				}
 
-//				for (int i = 0; i < num; i++) {
-//						String yearLast = new SimpleDateFormat("yy", Locale.CHINESE).format(Calendar.getInstance().getTime());
-//						Calendar cale = null;
-//						cale = Calendar.getInstance();
-//						int year = cale.get(Calendar.YEAR);
-//						GmClass gmClass = new GmClass();
-//						gmClass.setClassNo(yearLast + NoGenerator.getRandomNum(2));
-//						gmClass.setGrade(grade);
-//						gmClass.setName(grade + "(" + (i + 1) + ")");
-//						gmClass.setYear(year);
-//						gmClass.setAmount(50);
-//						gmClass.setStatus(0);
-//						gmClass.setIsDelete(0);
-//						service.insert(gmClass);
-//				}
-
 				return Result.success();
 		}
 
@@ -147,6 +138,24 @@ public class GmClassController {
 						//初始状态为删除
 						old.setIsDelete(1);
 						int r = service.update(old);
+				}
+				return Result.success();
+		}
+
+		@RequestMapping("/bind/head")
+		@ResponseBody
+		public Result bindHeadTeacher(@RequestParam int id, @RequestParam int teacherId) {
+				GmClass gmClass = service.findById(id);
+				if (ObjectUtils.isEmpty(gmClass)) return Result.fail("班级不存在");
+				GmTeacher teacher = gmTeacherService.findById(teacherId);
+				if (ObjectUtils.isEmpty(teacher)) return Result.fail("教师不存在");
+				gmClass.setTeacherId(teacherId);
+				gmClass.setTeacherName(teacher.getName());
+				service.update(gmClass);
+				//给予教师班主任权限
+				UserRole role = userRoleService.findByRole("headmaster");
+				if (!ObjectUtils.isEmpty(role)) {
+						teacherRoleRelationService.insert(teacherId, role.getId());
 				}
 				return Result.success();
 		}
