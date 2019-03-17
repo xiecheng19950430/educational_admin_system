@@ -31,10 +31,11 @@ CREATE TABLE `gm_class` (
   `status` int(11) DEFAULT NULL COMMENT '班级状态，0:在校，1：已毕业',
   `createAt` datetime DEFAULT NULL,
   `updateAt` datetime DEFAULT NULL,
-  `teacherId` int(11) DEFAULT NULL COMMENT '教师Id',
+  `teacherId` int(11) DEFAULT NULL COMMENT '班主任id',
   `isDelete` int(11) DEFAULT NULL COMMENT '是否删除，1：删除，0：未删除',
+  `teacherName` varchar(50) DEFAULT NULL COMMENT '班主任名字',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -43,7 +44,7 @@ CREATE TABLE `gm_class` (
 
 LOCK TABLES `gm_class` WRITE;
 /*!40000 ALTER TABLE `gm_class` DISABLE KEYS */;
-INSERT INTO `gm_class` VALUES (1,'1901','一(1)班',2019,50,0,'2019-03-16 18:29:17',NULL,NULL,0),(2,'1902','一(2)班',2019,50,0,'2019-03-16 18:29:17',NULL,NULL,0),(3,'1903','二(1)班',2019,50,0,'2019-03-16 18:29:17',NULL,NULL,0),(4,'1904','二(2)班',2019,50,0,'2019-03-16 18:29:17',NULL,NULL,0),(5,'1905','三(1)班',2019,50,0,'2019-03-16 18:29:17',NULL,NULL,0),(6,'1906','三(2)班',2019,50,0,'2019-03-16 18:29:17',NULL,NULL,0);
+INSERT INTO `gm_class` VALUES (15,'1901','一(1)班',2019,50,0,'2019-03-10 21:16:15',NULL,NULL,0,NULL),(16,'1902','一(2)班',2019,50,0,'2019-03-10 21:16:15',NULL,NULL,0,NULL),(17,'1903','二(1)班',2019,50,0,'2019-03-10 21:16:15',NULL,NULL,0,NULL),(18,'1904','二(2)班',2019,50,0,'2019-03-10 21:16:15',NULL,NULL,0,NULL),(19,'1905','三(1)班',2019,50,0,'2019-03-10 21:16:15',NULL,NULL,0,NULL),(20,'1906','三(2)班',2019,50,0,'2019-03-10 21:16:15',NULL,NULL,0,NULL);
 /*!40000 ALTER TABLE `gm_class` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -67,7 +68,6 @@ CREATE TABLE `gm_class_has_gm_teacher` (
 
 LOCK TABLES `gm_class_has_gm_teacher` WRITE;
 /*!40000 ALTER TABLE `gm_class_has_gm_teacher` DISABLE KEYS */;
-INSERT INTO `gm_class_has_gm_teacher` VALUES (1,3),(2,3);
 /*!40000 ALTER TABLE `gm_class_has_gm_teacher` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -158,7 +158,6 @@ CREATE TABLE `gm_student` (
   `birthday` datetime DEFAULT NULL,
   `createAt` datetime DEFAULT NULL,
   `updateAt` datetime DEFAULT NULL,
-  `isDelete` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -192,11 +191,13 @@ CREATE TABLE `gm_teacher` (
   `phone` varchar(50) DEFAULT NULL COMMENT '联系电话',
   `createAt` datetime DEFAULT NULL,
   `updateAt` datetime DEFAULT NULL,
-  `role` varchar(50) DEFAULT NULL COMMENT '角色，班主任classTeacher，系统管理员sysAdmin,教务管理员eduAdmin，教学领导teachLeader',
+  `role` varchar(50) DEFAULT NULL COMMENT '角色，超级管理员为superAdmin，其他为角色id（多个用"，"隔开）,班主任classTeacher，系统管理员sysAdmin,教务管理员eduAdmin，教学领导teachLeader',
   `isDelete` int(11) DEFAULT NULL COMMENT '是否删除，1：删除，0：未删除',
   `classId` int(11) DEFAULT NULL COMMENT '班级Id',
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+  `roleIds` varchar(500) DEFAULT NULL COMMENT '绑定角色id，多个用“，”隔开',
+  `roleNames` varchar(500) DEFAULT NULL COMMENT '绑定角色名称，多个用“，”隔开',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -205,7 +206,7 @@ CREATE TABLE `gm_teacher` (
 
 LOCK TABLES `gm_teacher` WRITE;
 /*!40000 ALTER TABLE `gm_teacher` DISABLE KEYS */;
-INSERT INTO `gm_teacher` VALUES (1,NULL,'超级管理员','admin','admin',NULL,NULL,NULL,NULL,NULL,NULL,NULL,'superAdmin',NULL,NULL),(2,'1','1','1','123456','1',NULL,NULL,NULL,NULL,'2019-03-08 15:06:15','2019-03-08 16:48:28','1',0,NULL),(3,'2','2','2','2','1','2019-03-17 00:00:00','2019-03-17 00:00:00','1','2','2019-03-17 09:27:19','2019-03-17 09:31:35','teacher',0,NULL);
+INSERT INTO `gm_teacher` VALUES (1,NULL,'超级管理员','admin','admin',NULL,NULL,NULL,NULL,NULL,NULL,NULL,'superAdmin',NULL,NULL,NULL,NULL),(2,'1','1','1','123456','1',NULL,NULL,NULL,NULL,'2019-03-10 17:59:10','2019-03-10 18:42:01','teacher',0,NULL,'2,3,4,5','教务管理员,教学领导,班主任,教师'),(3,'2','2','2','2','2',NULL,NULL,NULL,NULL,'2019-03-10 19:09:17',NULL,'teacher',0,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `gm_teacher` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -221,7 +222,7 @@ CREATE TABLE `role_module_relation` (
   `roleId` int(11) DEFAULT NULL,
   `moduleId` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -230,7 +231,7 @@ CREATE TABLE `role_module_relation` (
 
 LOCK TABLES `role_module_relation` WRITE;
 /*!40000 ALTER TABLE `role_module_relation` DISABLE KEYS */;
-INSERT INTO `role_module_relation` VALUES (13,1,1),(14,1,2),(15,2,1);
+INSERT INTO `role_module_relation` VALUES (3,5,2),(4,4,1),(5,4,2);
 /*!40000 ALTER TABLE `role_module_relation` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -246,7 +247,7 @@ CREATE TABLE `teacher_role_relation` (
   `teacherId` int(11) DEFAULT NULL,
   `roleId` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -255,7 +256,7 @@ CREATE TABLE `teacher_role_relation` (
 
 LOCK TABLES `teacher_role_relation` WRITE;
 /*!40000 ALTER TABLE `teacher_role_relation` DISABLE KEYS */;
-INSERT INTO `teacher_role_relation` VALUES (3,2,1),(4,3,1),(5,3,2);
+INSERT INTO `teacher_role_relation` VALUES (13,2,2),(14,2,3),(15,2,4),(16,2,5);
 /*!40000 ALTER TABLE `teacher_role_relation` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -271,8 +272,8 @@ CREATE TABLE `user_module` (
   `moduleName` varchar(50) DEFAULT NULL COMMENT '模块名称',
   `url` varchar(255) DEFAULT NULL COMMENT '路径',
   `pid` int(11) DEFAULT NULL COMMENT '父模块',
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -281,7 +282,7 @@ CREATE TABLE `user_module` (
 
 LOCK TABLES `user_module` WRITE;
 /*!40000 ALTER TABLE `user_module` DISABLE KEYS */;
-INSERT INTO `user_module` VALUES (1,'角色','/role',NULL),(2,'模块','/module',NULL);
+INSERT INTO `user_module` VALUES (1,'模块管理','/module',NULL),(2,'角色管理','/role',NULL);
 /*!40000 ALTER TABLE `user_module` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -296,10 +297,11 @@ CREATE TABLE `user_role` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `role` varchar(50) NOT NULL COMMENT '角色代码',
   `roleName` varchar(50) DEFAULT NULL COMMENT '角色名',
-  `moduleIds` varchar(50) DEFAULT NULL COMMENT '模块Ids',
+  `moduleIds` varchar(500) DEFAULT NULL COMMENT '模块Ids',
   `moduleUrls` varchar(500) DEFAULT NULL COMMENT '模块路径',
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+  `type` int(11) DEFAULT NULL COMMENT '类型1：系统角色（不可更改），2自定义角色',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -308,7 +310,7 @@ CREATE TABLE `user_role` (
 
 LOCK TABLES `user_role` WRITE;
 /*!40000 ALTER TABLE `user_role` DISABLE KEYS */;
-INSERT INTO `user_role` VALUES (1,'admin','管理员',NULL,'/role,/module'),(2,'headTeacher','班主任',NULL,'/role');
+INSERT INTO `user_role` VALUES (1,'systemAdmin','系统管理员',NULL,NULL,1),(2,'educationAdmin','教务管理员',NULL,NULL,1),(3,'teachLeader','教学领导',NULL,NULL,1),(4,'headmaster','班主任',NULL,'/module,/role',1),(5,'teacher','教师',NULL,'/role',1);
 /*!40000 ALTER TABLE `user_role` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -321,4 +323,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-03-17 16:02:37
+-- Dump completed on 2019-03-17 22:19:29
