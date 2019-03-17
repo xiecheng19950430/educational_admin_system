@@ -1,0 +1,342 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>lmm</groupId>
+    <artifactId>lmm-api</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <packaging>jar</packaging>
+
+    <name>ts_ebay</name>
+    <description>Demo project for Spring Boot</description>
+
+    <parent>
+        <groupId>lmm</groupId>
+        <artifactId>lmm-java</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <java.version>1.8</java.version>
+    </properties>
+
+    <dependencies>
+        <!--<dependency>
+            <groupId>ebay</groupId>
+            <artifactId>ebay-service</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>-->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-tx</artifactId>
+            <version>RELEASE</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+        </dependency>
+
+
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <version>RELEASE</version>
+        </dependency>
+
+        <dependency>
+            <groupId>net.logstash.logback</groupId>
+            <artifactId>logstash-logback-encoder</artifactId>
+            <version>4.7</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-amqp</artifactId>
+        </dependency>
+
+        <!--加入geohash距离计算 -->
+        <dependency>
+            <groupId>com.spatial4j</groupId>
+            <artifactId>spatial4j</artifactId>
+            <version>0.5</version>
+        </dependency>
+        <dependency>
+            <groupId>org.mybatis.spring.boot</groupId>
+            <artifactId>mybatis-spring-boot-starter</artifactId>
+            <version>1.1.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>net.sourceforge.nekohtml</groupId>
+            <artifactId>nekohtml</artifactId>
+            <version>1.9.22</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.auth0</groupId>
+            <artifactId>java-jwt</artifactId>
+            <version>3.0.1</version>
+        </dependency>
+
+        <!--<dependency>-->
+            <!--<groupId>alipay</groupId>-->
+            <!--<artifactId>alipay-sdk</artifactId>-->
+            <!--<version>20170117151523</version>-->
+        <!--</dependency>-->
+
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid</artifactId>
+            <version>1.0.24</version>
+        </dependency>
+
+
+        <dependency>
+            <groupId>com.qiniu</groupId>
+            <artifactId>qiniu-java-sdk</artifactId>
+            <version>[7.2.0, 7.2.99]</version>
+        </dependency>
+
+        <!-- aliyun -->
+        <!--<dependency>-->
+            <!--<groupId>com.aliyun.openservices</groupId>-->
+            <!--<artifactId>ons-client</artifactId>-->
+            <!--<version>1.2.7.Final</version>-->
+        <!--</dependency>-->
+
+        <!--<dependency>-->
+            <!--<groupId>com.gexin.platform</groupId>-->
+            <!--<artifactId>gexin-rp-sdk-http</artifactId>-->
+            <!--<version>4.0.1.7</version>-->
+        <!--</dependency>-->
+
+        <dependency>
+            <groupId>com.squareup.okhttp3</groupId>
+            <artifactId>okhttp</artifactId>
+            <version>3.1.2</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.codehaus.woodstox</groupId>
+            <artifactId>woodstox-core-asl</artifactId>
+            <version>4.4.1</version>
+        </dependency>
+
+        <!-- rabbitmq -->
+        <!--<dependency>
+            <groupId>com.rabbitmq</groupId>
+            <artifactId>amqp-client</artifactId>
+            <version>3.6.6</version>
+        </dependency>-->
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-amqp</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <version>3.14</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/oro/oro -->
+        <dependency>
+            <groupId>oro</groupId>
+            <artifactId>oro</artifactId>
+            <version>2.0.8</version>
+        </dependency>
+        <dependency>
+            <groupId>com.aliyun</groupId>
+            <artifactId>aliyun-java-sdk-dysmsapi</artifactId>
+            <version>RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>com.aliyun</groupId>
+            <artifactId>aliyun-java-sdk-core</artifactId>
+            <version>RELEASE</version>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.3.2</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                    <!--<encoding>UTF-8</encoding>
+                    <compilerArguments>
+                        <extdirs>${basedir}\lib</extdirs>
+                    </compilerArguments>-->
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-install-plugin</artifactId>
+                <executions>
+                    <!--<execution>
+                        <id>hack-binary</id>
+                        <phase>validate</phase>
+                        <configuration>
+                            <file>${basedir}/lib/alipay-sdk-20170117151523.jar</file>
+                            <repositoryLayout>default</repositoryLayout>
+                            <groupId>alipay</groupId>
+                            <artifactId>alipay-sdk</artifactId>
+                            <version>20170117151523</version>
+                            <packaging>jar</packaging>
+                            <generatePom>true</generatePom>
+                        </configuration>
+                        <goals>
+                            <goal>install-file</goal>
+                        </goals>
+                    </execution>-->
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>appassembler-maven-plugin</artifactId>
+                <version>1.10</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>generate-daemons</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <daemons>
+                        <daemon>
+                            <mainClass>com.ApiBootApplication</mainClass>
+                            <id>${project.name}</id>
+                            <platforms>
+                                <platform>jsw</platform>
+                            </platforms>
+                            <generatorConfigurations>
+                                <generatorConfiguration>
+                                    <generator>jsw</generator>
+                                    <includes>
+                                        <include>linux-x86-32</include>
+                                        <include>linux-x86-64</include>
+                                        <include>macosx-universal-64</include>
+                                        <include>macosx-universal-32</include>
+                                        <include>windows-x86-32</include>
+                                        <include>windows-x86-64</include>
+                                    </includes>
+                                    <configuration>
+                                        <property>
+                                            <name>wrapper.logfile</name>
+                                            <value>../logs/${project.name}.log</value>
+                                        </property>
+                                    </configuration>
+                                </generatorConfiguration>
+                            </generatorConfigurations>
+                            <jvmSettings>
+                                <initialMemorySize>256M</initialMemorySize>
+                                <maxMemorySize>1024M</maxMemorySize>
+                                <maxStackSize>1024M</maxStackSize>
+                                <extraArguments>
+                                    <extraArgument>-server</extraArgument>
+                                    <extraArgument>-Dspring.profiles.active=production</extraArgument>
+                                </extraArguments>
+                            </jvmSettings>
+                        </daemon>
+                        <daemon>
+                            <mainClass>com.ApiBootApplication</mainClass>
+                            <id>${project.name}-test</id>
+                            <platforms>
+                                <platform>jsw</platform>
+                            </platforms>
+                            <generatorConfigurations>
+                                <generatorConfiguration>
+                                    <generator>jsw</generator>
+                                    <includes>
+                                        <include>windows-x86-32</include>
+                                        <include>windows-x86-64</include>
+                                    </includes>
+                                    <configuration>
+                                        <property>
+                                            <name>wrapper.logfile</name>
+                                            <value>../logs/${project.name}.log</value>
+                                        </property>
+                                    </configuration>
+                                </generatorConfiguration>
+                            </generatorConfigurations>
+                            <jvmSettings>
+                                <initialMemorySize>256M</initialMemorySize>
+                                <maxMemorySize>1024M</maxMemorySize>
+                                <maxStackSize>1024M</maxStackSize>
+                                <extraArguments>
+                                    <extraArgument>-server</extraArgument>
+                                    <extraArgument>-Dspring.profiles.active=test</extraArgument>
+                                </extraArguments>
+                            </jvmSettings>
+                        </daemon>
+                    </daemons>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>1.8</version>
+                <executions>
+                    <execution>
+                        <id>echodir</id>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <phase>package</phase>
+                        <inherited>true</inherited>
+                        <configuration>
+                            <target>
+                                <mkdir
+                                        dir="${project.build.directory}/generated-resources/appassembler/jsw/${project.name}/logs"/>
+                                <chmod
+                                        file="${project.build.directory}/generated-resources/appassembler/jsw/${project.name}/bin/*"
+                                        perm="755"/>
+                            </target>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+    <repositories>
+        <repository>
+            <id>getui-nexus</id>
+            <url>http://mvn.gt.igexin.com/nexus/content/repositories/releases/</url>
+        </repository>
+        <repository>
+            <id>my-local-repo</id>
+            <releases>
+                <enabled>true</enabled>
+                <checksumPolicy>ignore</checksumPolicy>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+            <url>file://${basedir}/lib</url>
+        </repository>
+    </repositories>
+</project>

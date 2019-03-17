@@ -1,0 +1,36 @@
+server:
+  port: 9001
+
+spring:
+  datasource:
+    url: jdbc:mysql://114.80.200.31:3306/member?allowMultiQueries=true&useSSL=true
+    username: root
+    password: 11111
+    maxActive: 100
+    initialSize: 10
+
+
+  redis:
+    host: r-bp173e63362e7794.redis.rds.aliyuncs.com
+    port: 6379
+    password: CcU0P6AwQ4ptpWAo
+    pool:
+      max-idle: 50
+
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5672
+    username: lmm
+    password: rhUeEbxvjRa1oIhF
+    
+#rb:
+#  notifyUrl: https://api.1688zdw.com/rb/result
+#  pubKeyUrl: /mnt/cert/rongbao.cer
+#  privateKey: /mnt/cert/user-rsa.pfx
+#  url: https://agentpay.reapal.com/
+#  password: 168888
+#  userKey: ac4bd559gd9gfa4gdebbbdf2gb746gf80be8e50987cfge79fa192fe4b2ad817f
+#  merchantID: 100000001301712
+#  version: 1.0
+#  charset: UTF-8
+#  signType: MD5

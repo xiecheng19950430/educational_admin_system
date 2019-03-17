@@ -1,0 +1,23 @@
+server:
+  port: 9001
+
+spring:
+  datasource:
+    url: jdbc:mysql://114.80.200.31:3306/member?allowMultiQueries=true&useSSL=true
+    username: root
+    password: 11111
+    maxActive: 100
+    initialSize: 10
+
+
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    pool:
+      max-idle: 8
+
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5672
+    username: guest
+    password: guest

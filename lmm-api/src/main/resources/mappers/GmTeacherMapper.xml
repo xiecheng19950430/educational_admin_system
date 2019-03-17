@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ebay.mappers.GmTeacherMapper">
+    <resultMap id="baseResultMap" type="com.ebay.models.GmTeacher">
+        <id property="id" column="id"></id>
+        <result property="classId" column="classId"></result>
+        <result property="workNo" column="workNo"></result>
+        <result property="name" column="name"></result>
+        <result property="loginId" column="loginId"></result>
+        <result property="password" column="password"></result>
+        <result property="isDelete" column="isDelete"></result>
+        <result property="sex" column="sex"></result>
+        <result property="birthday" column="birthday"></result>
+        <result property="hiredate" column="hiredate"></result>
+        <result property="position" column="position"></result>
+        <result property="phone" column="phone"></result>
+        <result property="roleName" column="roleName"></result>
+        <result property="createAt" column="createAt"></result>
+        <result property="updateAt" column="updateAt"></result>
+    </resultMap>
+
+    <select id="getTeacherList" resultMap="baseResultMap">
+        select *
+        from `gm_teacher`
+        where 1=1
+        <if test="classId != null">and classId=#{classId}</if>
+        <if test="workNo != null">and workNo=#{workNo}</if>
+        <if test="isDelete != null">and isDelete=#{isDelete}</if>
+        <if test="name != null">and name like CONCAT('%',#{name},'%')</if>
+        ORDER BY createAt desc
+        <if test="start != null">limit #{start}, #{size}</if>
+    </select>
+
+    <select id="findByClassId" resultMap="baseResultMap">
+        select *
+        from `gm_teacher`
+        WHERE classId=#{classId} and role=#{role}
+        limit 0,1
+    </select>
+
+
+    <select id="findByLoginId" resultMap="baseResultMap">
+        select *
+        from `gm_teacher`
+        WHERE loginId=#{loginId}
+        limit 0,1
+    </select>
+
+    <select id="findById" resultMap="baseResultMap">
+        select *
+        from `gm_teacher`
+        WHERE id=#{id} limit 0,1
+    </select>
+
+    <select id="count" resultType="java.lang.Integer">
+        select count(*)
+        from `gm_teacher`
+        where 1=1
+        <if test="workNo != null">and workNo=#{workNo}</if>
+        <if test="isDelete != null">and isDelete=#{isDelete}</if>
+        <if test="name != null">and name like CONCAT('%',#{name},'%')</if>
+    </select>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        insert into gm_teacher (workNo,name,loginId,password,sex,createAt
+        <if test="isDelete != null">,isDelete</if>
+        <if test="birthday != null">,birthday</if>
+        <if test="hiredate != null">,hiredate</if>
+        <if test="position != null">,position</if>
+        <if test="phone != null">,phone</if>
+        <if test="role != null">,role</if>
+        )
+        values (#{workNo},#{name},#{workNo},#{password},#{sex},now()
+        <if test="isDelete != null">,#{isDelete}</if>
+        <if test="birthday != null">,#{birthday}</if>
+        <if test="hiredate != null">,#{hiredate}</if>
+        <if test="position != null">,#{position}</if>
+        <if test="phone != null">,#{phone}</if>
+        <if test="role != null">,#{role}</if>
+        )
+    </insert>
+
+    <update id="update">
+        UPDATE gm_teacher SET
+        classId=#{classId},workNo=#{workNo},name=#{name},loginId=#{loginId},password=#{password},sex=#{sex},updateAt=now()
+        <if test="isDelete != null">,isDelete=#{isDelete}</if>
+        <if test="birthday != null">,birthday=#{birthday}</if>
+        <if test="hiredate != null">,hiredate=#{hiredate}</if>
+        <if test="position != null">,position=#{position}</if>
+        <if test="phone != null">,phone=#{phone}</if>
+        <if test="role != null">,role=#{role}</if>
+        <if test="roleIds != null and roleIds != ''">,roleIds=#{roleIds}</if>
+        <if test="roleNames != null and roleNames != ''">,roleNames=#{roleNames}</if>
+        WHERE id=#{id}
+    </update>
+
+</mapper>
