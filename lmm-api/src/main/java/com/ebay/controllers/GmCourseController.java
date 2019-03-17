@@ -8,8 +8,11 @@ import com.ebay.services.IimportService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.text.ParseException;
 import java.util.List;
 
 @Controller
@@ -71,6 +74,12 @@ public class GmCourseController {
         return Result.success();
     }
 
-
+    //Excel导入课程信息到数据库
+    @RequestMapping("/importCourseExcel")
+    @ResponseBody
+    public Result importCourseExcel(@RequestParam("courseFile") MultipartFile courseFile) throws ParseException {
+        iimportService.importCourseExcel(courseFile);
+        return Result.success();
+    }
 
 }
