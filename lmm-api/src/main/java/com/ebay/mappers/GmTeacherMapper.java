@@ -29,4 +29,7 @@ public interface GmTeacherMapper {
 
 		@Select("select gt.* from gm_teacher gt left join gm_class_has_gm_teacher cht on cht.gm_teacher_id=gt.id where cht.gm_class_id=#{classId} ")
 		List<GmTeacher> queryByClassId(int classId);
+
+		@Update("update gm_teacher set password=#{password} where id=#{id} ")
+		void updatePassword(@Param("id") int id, @Param("password") String password);
 }

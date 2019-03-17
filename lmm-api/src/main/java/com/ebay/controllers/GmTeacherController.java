@@ -269,5 +269,16 @@ public class GmTeacherController {
 				return Result.success();
 		}
 
+		//修改密码
+		@RequestMapping("/change/password")
+		@ResponseBody
+		public Result bindClass(@RequestParam String loginId, @RequestParam String password, @RequestParam String passwordNew) {
+				GmTeacher teacher = service.findByLoginId(loginId);
+				if (ObjectUtils.isEmpty(teacher)) return Result.fail("未找到该教师");
+				if (!Objects.equals(teacher.getPassword(), password)) return Result.fail("原密码错误");
+				service.updatePassword(teacher.getId(), passwordNew);
+				return Result.success();
+		}
+
 
 }

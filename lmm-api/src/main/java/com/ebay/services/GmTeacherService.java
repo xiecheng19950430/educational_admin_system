@@ -53,4 +53,8 @@ public class GmTeacherService {
 				return mapper.queryByClassId(classId);
 
 		}
+
+		public void updatePassword(int id, String password) {
+				mapper.updatePassword(id, password);
+		}
 }
