@@ -24,9 +24,9 @@
         from `gm_teacher`
         where 1=1
         <if test="classId != null">and classId=#{classId}</if>
-        <if test="workNo != null">and workNo=#{workNo}</if>
+        <if test="workNo != null and workNo != ''">and workNo=#{workNo}</if>
         <if test="isDelete != null">and isDelete=#{isDelete}</if>
-        <if test="name != null">and name like CONCAT('%',#{name},'%')</if>
+        <if test="name != null and name != ''">and name like CONCAT('%',#{name},'%')</if>
         ORDER BY createAt desc
         <if test="start != null">limit #{start}, #{size}</if>
     </select>

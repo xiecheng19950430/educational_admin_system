@@ -17,6 +17,7 @@ public class DateConverterConfig implements Converter<String, Date> {
 		private static final List<String> formarts = new ArrayList<>(4);
 
 		static {
+				formarts.add("yyyy");
 				formarts.add("yyyy-MM");
 				formarts.add("yyyy-MM-dd");
 				formarts.add("yyyy-MM-dd hh:mm");

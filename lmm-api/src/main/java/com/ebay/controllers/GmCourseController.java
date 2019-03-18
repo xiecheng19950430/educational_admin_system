@@ -73,12 +73,12 @@ public class GmCourseController {
 		}
 
 
-    //Excel导入课程信息到数据库
-    @RequestMapping("/importCourseExcel")
-    @ResponseBody
-    public Result importCourseExcel(@RequestParam("courseFile") MultipartFile courseFile) throws ParseException {
-        iimportService.importCourseExcel(courseFile);
-        return Result.success();
-    }
+		//Excel导入课程信息到数据库
+		@RequestMapping("/importCourseExcel")
+		@ResponseBody
+		public Result importCourseExcel(@RequestParam("courseFile") MultipartFile courseFile) throws ParseException {
+				iimportService.importCourseExcel(courseFile);
+				return Result.success();
+		}
 
 }

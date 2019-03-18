@@ -36,6 +36,9 @@ public class GmTeacher {
 		//角色名称 多个角色用“，”隔开
 		private String roleNames;
 
+		//==================联查数据
+		//所带班级名称
+		private String classNames;
 
 		//弃用
 		private String roleName; //系统管理员systemAdmin，教务管理员educationAdmin,教学领导teachLeader，班主任headmaster,教师teacher

@@ -9,8 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Calendar;
-import java.util.List;
+import java.util.*;
 
 @Controller
 @RequestMapping("/gm_class")
@@ -135,11 +134,13 @@ public class GmClassController {
 		@ResponseBody
 		public Result update(GmClass gmClass) {
 				GmClass old = service.findById(gmClass.getId());
-				BeanUtil.copyNotNullBean(gmClass, old);
-				int r = service.update(old);
-				if (gmClass.getName() == old.getName()) {
+				if (ObjectUtils.isEmpty(old)) return Result.fail("班级不存在");
+				if (Objects.equals(old.getName(), gmClass.getName())) {
 						return Result.fail("修改后的班级名称重名，请前去修改！");
 				}
+				BeanUtil.copyNotNullBean(gmClass, old);
+				int r = service.update(old);
+
 				return Result.success();
 		}
 

@@ -21,7 +21,7 @@
         <if test="year != null">and year=#{year}</if>
         <if test="isDelete != null">and isDelete=#{isDelete}</if>
         <if test="status != null">and status=#{status}</if>
-        <if test="name != null"> and name like CONCAT('%',#{name},'%')</if>
+        <if test="name != null and name != ''">and name like CONCAT('%',#{name},'%')</if>
         ORDER BY createAt desc
         <if test="start != null">limit #{start}, #{size}</if>
     </select>
@@ -39,7 +39,7 @@
         <if test="year != null">and year=#{year}</if>
         <if test="isDelete != null">and isDelete=#{isDelete}</if>
         <if test="status != null">and status=#{status}</if>
-        <if test="name != null"> and name like CONCAT('%',#{name},'%')</if>
+        <if test="name != null">and name like CONCAT('%',#{name},'%')</if>
     </select>
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="id">
@@ -54,7 +54,8 @@
     </insert>
 
     <update id="update">
-        UPDATE gm_class SET teacherId=#{teacherId}, name=#{name},year=#{year},amount=#{amount},status=#{status},updateAt=now()
+        UPDATE gm_class SET teacherId=#{teacherId},
+        name=#{name},year=#{year},amount=#{amount},status=#{status},updateAt=now(),teacherName=#{teacherName}
         <if test="isDelete != null">,isDelete=#{isDelete}</if>
         WHERE id=#{id}
     </update>

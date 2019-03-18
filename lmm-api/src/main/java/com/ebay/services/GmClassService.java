@@ -47,4 +47,9 @@ public class GmClassService {
     public Integer getLatestClassNo() {
         return mapper.getLatestClassNo();
     }
+
+    public List<String> queryNameByTeacherId(int teacherId) {
+        return mapper.queryNameByTeacherId(teacherId);
+    }
+
 }

@@ -1,14 +1,12 @@
 package com.ebay.controllers;
 
 import com.ebay.common.Result;
-import com.ebay.common.utils.BeanUtil;
-import com.ebay.common.utils.MD5Util;
+import com.ebay.common.utils.*;
 import com.ebay.models.*;
 import com.ebay.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.ObjectUtils;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -31,6 +29,8 @@ public class GmTeacherController {
 		private UserRoleService userRoleService;
 		@Autowired
 		private GmClassHasGmTeacherService gmClassHasGmTeacherService;
+		@Autowired
+		private GmClassService gmClassService;
 
 		//列表
 		@RequestMapping("/list")
@@ -45,6 +45,12 @@ public class GmTeacherController {
 						isDelete = 0;
 				List<GmTeacher> list = service.getTeacherList(null, workNo, isDelete, name, page, size);
 				int count = service.count(workNo, isDelete, name);
+				list.forEach(gmTeacher -> {
+						List<String> classNameList = gmClassService.queryNameByTeacherId(gmTeacher.getId());
+						String classNames = StringUtils.join(classNameList, ",");
+						gmTeacher.setClassNames(classNames);
+				});
+
 				return Result.build().put("list", list).put("count", count).result();
 		}
 
