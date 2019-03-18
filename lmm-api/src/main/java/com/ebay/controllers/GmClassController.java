@@ -2,10 +2,11 @@ package com.ebay.controllers;
 
 import com.ebay.common.Result;
 import com.ebay.common.utils.BeanUtil;
-import com.ebay.models.GmClass;
-import com.ebay.services.GmClassService;
+import com.ebay.models.*;
+import com.ebay.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Calendar;
@@ -16,6 +17,12 @@ import java.util.List;
 public class GmClassController {
 		@Autowired
 		private GmClassService service;
+		@Autowired
+		private GmTeacherService gmTeacherService;
+		@Autowired
+		private TeacherRoleRelationService teacherRoleRelationService;
+		@Autowired
+		private UserRoleService userRoleService;
 
 		//列表
 		@RequestMapping("/list")
@@ -147,6 +154,24 @@ public class GmClassController {
 						//初始状态为删除
 						old.setIsDelete(1);
 						int r = service.update(old);
+				}
+				return Result.success();
+		}
+
+		@RequestMapping("/bind/head")
+		@ResponseBody
+		public Result bindHeadTeacher(@RequestParam int id, @RequestParam int teacherId) {
+				GmClass gmClass = service.findById(id);
+				if (ObjectUtils.isEmpty(gmClass)) return Result.fail("班级不存在");
+				GmTeacher teacher = gmTeacherService.findById(teacherId);
+				if (ObjectUtils.isEmpty(teacher)) return Result.fail("教师不存在");
+				gmClass.setTeacherId(teacherId);
+				gmClass.setTeacherName(teacher.getName());
+				service.update(gmClass);
+				//给予教师班主任权限
+				UserRole role = userRoleService.findByRole("headmaster");
+				if (!ObjectUtils.isEmpty(role)) {
+						teacherRoleRelationService.insert(teacherId, role.getId());
 				}
 				return Result.success();
 		}

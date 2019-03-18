@@ -11,11 +11,11 @@ import java.util.List;
 public interface GmCourseMapper {
 
     List<GmCourse> getCourseList(@Param("openGrade") Integer openGrade, @Param("openTerm") String openTerm,
-                                 @Param("isDelete") Integer isDelete, @Param("courseName") String courseName,
-                                 @Param("start") Integer start, @Param("size") Integer size);
+																 @Param("isDelete") Integer isDelete, @Param("courseName") String courseName,
+																 @Param("start") Integer start, @Param("size") Integer size);
 
-    int count(@Param("openGrade") Integer openGrade,@Param("openTerm") String openTerm,
-              @Param("isDelete") Integer isDelete, @Param("courseName") String courseName);
+    int count(@Param("openGrade") Integer openGrade, @Param("openTerm") String openTerm,
+							@Param("isDelete") Integer isDelete, @Param("courseName") String courseName);
 
     int update(GmCourse gmCourse);
 

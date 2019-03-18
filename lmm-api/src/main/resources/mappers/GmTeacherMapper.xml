@@ -3,7 +3,7 @@
 <mapper namespace="com.ebay.mappers.GmTeacherMapper">
     <resultMap id="baseResultMap" type="com.ebay.models.GmTeacher">
         <id property="id" column="id"></id>
-        <result property="classId" column="classId"></result>
+        <!--<result property="classId" column="classId"></result>-->
         <result property="workNo" column="workNo"></result>
         <result property="name" column="name"></result>
         <result property="loginId" column="loginId"></result>
@@ -82,7 +82,8 @@
 
     <update id="update">
         UPDATE gm_teacher SET
-        classId=#{classId},workNo=#{workNo},name=#{name},loginId=#{loginId},password=#{password},sex=#{sex},updateAt=now()
+        workNo=#{workNo},name=#{name},loginId=#{loginId},password=#{password},sex=#{sex},updateAt=now()
+        <!--<if test="classId != null">,classId=#{classId}</if>-->
         <if test="isDelete != null">,isDelete=#{isDelete}</if>
         <if test="birthday != null">,birthday=#{birthday}</if>
         <if test="hiredate != null">,hiredate=#{hiredate}</if>

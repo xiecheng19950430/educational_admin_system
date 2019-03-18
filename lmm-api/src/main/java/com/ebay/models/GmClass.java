@@ -7,7 +7,10 @@ import java.util.Date;
 @Data
 public class GmClass {
     private Integer id;
+    //班主任id
     private Integer teacherId;
+    //班主任名字
+    private String teacherName;
     //班级编号
     private String classNo;
     //年级
