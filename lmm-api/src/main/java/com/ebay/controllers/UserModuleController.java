@@ -69,7 +69,7 @@ public class UserModuleController {
 		@RequestMapping("/delete")
 		@ResponseBody
 		public Result delete(@RequestParam int id) {
-//				同时删除子模块
+                //同时删除子模块
 				service.deleteWithChildren(id);
 
 				return Result.success();

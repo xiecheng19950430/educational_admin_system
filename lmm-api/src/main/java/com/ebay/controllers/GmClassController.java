@@ -27,14 +27,14 @@ public class GmClassController {
 		@RequestMapping("/list")
 		@ResponseBody
 		public Result getClassList(String name,
-															 Integer isDelete,
-															 Integer status,
-															 Integer year,
-															 Integer page,
-															 Integer size) {
+								   Integer isDelete,
+								   Integer status,
+								   Integer year,
+								   Integer page,
+								   Integer size) {
 				//默认非删除
 				if (isDelete == null)
-						isDelete = 0;
+					isDelete = 0;
 				List<GmClass> list = service.getClassList(name, isDelete, status, year, page, size);
 				int count = service.count(name, isDelete, status, year);
 				return Result.build().put("list", list).put("count", count).result();
@@ -54,13 +54,13 @@ public class GmClassController {
 		@ResponseBody
 		public Result generate(@RequestParam int num) {
 				//判断当前是否有当前学年
-//初中默认3个年级
-//				新一年
+			    //初中默认3个年级
+                //新一年
 				Calendar cale = Calendar.getInstance();
 				int year = cale.get(Calendar.YEAR);
-//				全删
+                //全删
 				service.deleteByYear(year);
-				//				全增
+				//全增
 				Result result = this.getLatestClassNo();
 				if (result.isSuccess()) {
 						int lastClassNo = Integer.valueOf(result.getData().toString());

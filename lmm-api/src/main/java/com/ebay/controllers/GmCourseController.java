@@ -26,11 +26,11 @@ public class GmCourseController {
 		@RequestMapping("/list")
 		@ResponseBody
 		public Result getCourseList(Integer openGrade,
-																String openTerm,
-																Integer isDelete,
-																String courseName,
-																Integer page,
-																Integer size) {
+									String openTerm,
+									Integer isDelete,
+									String courseName,
+									Integer page,
+									Integer size) {
 				//默认非删除
 				if (isDelete == null)
 						isDelete = 0;

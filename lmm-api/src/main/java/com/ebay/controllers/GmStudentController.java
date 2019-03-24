@@ -76,9 +76,7 @@ public class GmStudentController {
             old.setIsDelete(1);
             int r = service.update(old);
         }
-
         //删除关联的角色授权
-
         return Result.success();
     }
 

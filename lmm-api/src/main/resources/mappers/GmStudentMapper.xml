@@ -26,6 +26,32 @@
         <if test="start != null">limit #{start}, #{size}</if>
     </select>
 
+    <select id="count" resultType="java.lang.Integer">
+        select count(*)
+        from `gm_student`
+        where 1=1
+        <if test="studentNo != null">and studentNo=#{studentNo}</if>
+        <if test="isDelete != null">and isDelete=#{isDelete}</if>
+        <if test="name != null">and name like CONCAT('%',#{name},'%')</if>
+        <if test="birthday != null">and DATE_FORMAT(birthday,'%Y-%m-%d')=#{birthday}</if>
+    </select>
+
+    <select id="findByClassId" resultMap="baseResultMap">
+        select *
+        from `gm_student`
+        WHERE classId=#{classId} and role=#{role}
+        limit 0,1
+    </select>
+
+    <select id="findById" resultMap="baseResultMap">
+        select *
+        from `gm_student`
+        WHERE id=#{id} limit 0,1
+    </select>
+
+
+
+
     <insert id="insert" useGeneratedKeys="true" keyProperty="id">
         insert into gm_student (classId,createAt
         <if test="isDelete != null">,isDelete</if>

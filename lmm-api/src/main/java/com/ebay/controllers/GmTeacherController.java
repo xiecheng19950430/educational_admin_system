@@ -36,10 +36,10 @@ public class GmTeacherController {
 		@RequestMapping("/list")
 		@ResponseBody
 		public Result getTeacherList(Integer isDelete,
-																 String name,
-																 String workNo,
-																 Integer page,
-																 Integer size) {
+									 String name,
+									 String workNo,
+									 Integer page,
+									 Integer size) {
 				//默认非删除
 				if (isDelete == null)
 						isDelete = 0;
