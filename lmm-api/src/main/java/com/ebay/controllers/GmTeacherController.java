@@ -180,7 +180,7 @@ public class GmTeacherController {
 		//Excel导入教师信息到数据库
 		@RequestMapping("/importTeacherExcel")
 		@ResponseBody
-		public Result importTeacherExcel(@RequestParam("teacherFile") MultipartFile teacherFile) throws ParseException {
+		public Result importTeacherExcel(@RequestParam("file") MultipartFile teacherFile) throws ParseException {
 				iimportService.importTeacherExcel(teacherFile);
 				return Result.success();
 		}

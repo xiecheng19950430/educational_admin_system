@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.ebay.mappers.ExcelMapper">
-    <resultMap id="baseResultMap" type="com.ebay.models.GmTeacher">
+    <resultMap id="teacherBaseResultMap" type="com.ebay.models.GmTeacher">
         <id property="id" column="id"></id>
         <result property="workNo" column="workNo"></result>
         <result property="name" column="name"></result>
@@ -18,7 +18,7 @@
         <result property="updateAt" column="updateAt"></result>
     </resultMap>
 
-    <resultMap id="baseResultMap" type="com.ebay.models.GmCourse">
+    <resultMap id="courseBaseResultMap" type="com.ebay.models.GmCourse">
         <id property="id" column="id"></id>
         <result property="studentId" column="studentId"></result>
         <result property="courseNo" column="courseNo"></result>
@@ -34,7 +34,7 @@
         <result property="updateAt" column="updateAt"></result>
     </resultMap>
 
-    <resultMap id="baseResultMap" type="com.ebay.models.GmGradeInfo">
+    <resultMap id="gradeBaseResultMap" type="com.ebay.models.GmGradeInfo">
         <id property="id" column="id"></id>
         <result property="classId" column="classId"></result>
         <result property="teacherId" column="teacherId"></result>
