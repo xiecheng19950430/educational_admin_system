@@ -1,6 +1,8 @@
 package com.ebay.utils;
 
 import org.apache.poi.xwpf.usermodel.*;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTblPr;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.STJc;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -10,8 +12,8 @@ import java.util.*;
 public class DocxUtil {
     /**
      * @Description: 将t中的字段转换成替换模板需要的数据${字段}-->字段值
-     *      在word模板中变量为${valuename},为每个值建一个以‘${valuename}’为键，‘value’为值的Map集合，
-     *      利用键去和Word模板中寻找相等的变量
+     * 在word模板中变量为${valuename},为每个值建一个以‘${valuename}’为键，‘value’为值的Map集合，
+     * 利用键去和Word模板中寻找相等的变量
      */
     public static <T> Map<String, String> copyParamFromBean(T t, Map<String, String> params) {
         Field[] fields = t.getClass().getDeclaredFields();
@@ -45,17 +47,15 @@ public class DocxUtil {
                 Iterator<String> iterator = set.iterator();
                 while (iterator.hasNext()) {
                     String key = iterator.next();
-                    List<XWPFRun> run=paragraph.getRuns();
-                    for(int i=0;i<run.size();i++)
-                    {
-                        if(run.get(i).getText(run.get(i).getTextPosition())!=null &&
-                            run.get(i).getText(run.get(i).getTextPosition()).equals(key))
-                        {
+                    List<XWPFRun> run = paragraph.getRuns();
+                    for (int i = 0; i < run.size(); i++) {
+                        if (run.get(i).getText(run.get(i).getTextPosition()) != null &&
+                            run.get(i).getText(run.get(i).getTextPosition()).equals(key)) {
                             /**
                              * 参数0表示生成的文字是要从哪一个地方开始放置,设置文字从位置0开始
                              * 就可以把原变量替换掉
                              */
-                            run.get(i).setText(map.get(key),0);
+                            run.get(i).setText(map.get(key), 0);
                         }
                     }
                 }
@@ -77,11 +77,15 @@ public class DocxUtil {
                         }
                     }
                 }
+                //设置表格居中
+                CTTblPr tablePr = table.getCTTbl().addNewTblPr();
+                tablePr.addNewJc().setVal(STJc.CENTER);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
     /**
      * 关闭输出流
      *
