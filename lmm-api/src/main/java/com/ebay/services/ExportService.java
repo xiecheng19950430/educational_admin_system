@@ -1,7 +1,8 @@
 package com.ebay.services;
 
-import com.ebay.models.GmStudent;
+import com.ebay.models.*;
 import com.ebay.templete.QualityReportDocTemplete;
+import com.ebay.utils.ExcelUtil;
 import com.ebay.utils.FileUtil;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,12 @@ import java.util.*;
 public class ExportService {
     @Autowired
     private GmStudentService studentService;
+    @Autowired
+    private GmStudentSubService studentSubService;
+    @Autowired
+    private GmStudentAssessmentService studentAssessmentService;
+    @Autowired
+    private GmStudentBodyStatusService studentBodyStatusService;
 
     //学生素质报告导出
     public void exportQualityReportDoc(HttpServletRequest request, HttpServletResponse response) {
@@ -101,12 +108,7 @@ public class ExportService {
                 }
             }
 
-
-//            setBrowser(request, response, document, "测试.doc");
-//            this.setBrowserWithZip(request, response, document, map);
-            System.out.println("导出解析成功$");
         } catch (Exception e) {
-            System.out.println("导出解析失败$");
             e.printStackTrace();
         } finally {
             try {
@@ -174,9 +176,6 @@ public class ExportService {
                     while ((len = bs.read(buffer)) != -1) {
                         os.write(buffer, 0, len);
                     }
-                } else {
-                    String error = URLEncoder.encode("下载的文件资源不存在");
-                    response.sendRedirect("/imgUpload/imgList?error=" + error);
                 }
             } catch (IOException ex) {
                 ex.printStackTrace();
@@ -216,13 +215,20 @@ public class ExportService {
     }
 
     private Map getQualityReport(GmStudent student) {
+        String stuNo = student.getStudentNo();
+        String sn = ExcelUtil.getSemester();
+
         Map map = new HashMap();
-        map.put("student", "xxx");//学生基本信息
+        map.put("student", student);//学生基本信息
+        GmStudentSub sub = studentSubService.findByNoAndSemester(stuNo, sn);
+        map.put("sub", sub);//学生基本信息
         map.put("attendance", "xxx");//出勤信息
         map.put("termscore", "xxx");//学科课程学习状况
         map.put("quality", "xxx");//综合素质评价
-        map.put("assessment", "xxx");//综合能力考核
-        map.put("bodystatus", "xxx");//身体状况
+        GmStudentAssessment assessment = studentAssessmentService.findByNoAndSemester(stuNo, sn);
+        map.put("assessment", assessment);//综合能力考核
+        GmStudentBodyStatus bodyStatus = studentBodyStatusService.findByNoAndSemester(stuNo, sn);
+        map.put("bodystatus", bodyStatus);//身体状况
         return map;
     }
 }
