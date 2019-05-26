@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ebay.mappers.GmStudentAttendanceMapper">
+    <resultMap id="baseResultMap" type="com.ebay.models.GmStudentAttendance"/>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        insert into gm_student_attendance
+        (studentNo,name,lateNumberOfDays,sickLeaveNumberOfDays,affairLeaveNumberOfDays,semester )
+        values
+        (#{studentNo},#{name},#{lateNumberOfDays},#{sickLeaveNumberOfDays},#{affairLeaveNumberOfDays},#{semester} )
+    </insert>
+    <select id="checkWithOutSelf" resultType="boolean">
+        select exists (
+        select 1
+        from gm_student_attendance
+        where studentNo=#{studentNo}
+        and semester=#{semester}
+        <if test="id != null">and id=#{id}</if>
+        )
+    </select>
+</mapper>

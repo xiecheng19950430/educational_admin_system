@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.ebay.common.utils.StringUtils;
 import com.ebay.mappers.ExcelMapper;
 import com.ebay.models.GmCourse;
+import com.ebay.models.GmGradeInfo;
 import com.ebay.models.GmTeacher;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFDateUtil;
@@ -140,7 +141,7 @@ public class IimportService {
                 e.printStackTrace();
             }
         }
-        Sheet sheet = workbook.getSheet("sheet2");
+        Sheet sheet = workbook.getSheet("sheet1");
         int rows = sheet.getLastRowNum();
         logger.info("【rows】{}", rows);
         long startTime = System.currentTimeMillis();
@@ -155,7 +156,7 @@ public class IimportService {
                 String courseName = getCellValue(row.getCell(1));
                 course.setCourseName(courseName);
                 //开课年级
-                Integer openGrade = Integer.parseInt(getCellValue(row.getCell(2)));
+                String openGrade = getCellValue(row.getCell(2));
                 course.setOpenGrade(openGrade);
                 //开课学期
                 String openTerm = getCellValue(row.getCell(3));
@@ -170,7 +171,8 @@ public class IimportService {
                 String classAt = getCellValue(row.getCell(6));
                 if (!StringUtils.isEmpty(classAt)) {
                     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-                    course.setClassAt(sdf.parse(classAt));
+                    Date date = sdf.parse(classAt);
+                    course.setClassAt(date);
                 }
                 //描述
                 String description = getCellValue(row.getCell(7));
@@ -186,6 +188,84 @@ public class IimportService {
             logger.info("【消耗时间为】{}", totaltime);  //  将近两万条数据 3秒解析完成
             logger.info("【第一条数据为】{}", JSON.toJSON(courseList.get(0)));
             return rows;
+    }
+
+    public Integer importGradeInfoExcel(MultipartFile gradeInfoFile) throws ParseException {
+        //1.  使用HSSFWorkbook 打开或者创建 “Excel对象”
+        //2.  用HSSFWorkbook返回对象或者创建sheet对象
+        //3.  用sheet返回行对象，用行对象得到Cell对象
+        //4.  对Cell对象进行读写
+        List<GmGradeInfo> gradeInfoList = new ArrayList<>();
+        Workbook workbook = null;
+        String gradeInfoFileName = gradeInfoFile.getOriginalFilename();//  获取文件名
+        logger.info("【gradeInfoFileName】{}", gradeInfoFileName);
+        if (gradeInfoFileName.endsWith(XLS)) {
+            try {
+                workbook = new HSSFWorkbook(gradeInfoFile.getInputStream());//  2003版本
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        if (gradeInfoFileName.endsWith(XLSX)) {
+            try {
+                workbook = new XSSFWorkbook(gradeInfoFile.getInputStream());//  2007版本
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        Sheet sheet = workbook.getSheet("sheet2");
+        int rows = sheet.getLastRowNum();
+        logger.info("【rows】{}", rows);
+        long startTime = System.currentTimeMillis();
+        for (int i = 1; i <= rows + 1; i++) {
+            Row row = sheet.getRow(i);
+            if (row != null) {
+                GmGradeInfo gradeInfo = new GmGradeInfo();
+                //学号
+                String studentNo = getCellValue(row.getCell(0));
+                gradeInfo.setStudentNo(studentNo);
+                //学生名字
+                String name = getCellValue(row.getCell(1));
+                gradeInfo.setName(name);
+                //课程名
+                String courseName = getCellValue(row.getCell(2));
+                gradeInfo.setCourseName(courseName);
+                //平时成绩
+                Integer grade_ordinary = Integer.parseInt(getCellValue(row.getCell(3)));
+                gradeInfo.setGrade_ordinary(grade_ordinary);
+                //期中成绩
+                Integer grade_mid = Integer.parseInt(getCellValue(row.getCell(4)));
+                gradeInfo.setGrade_mid(grade_mid);
+                //期末成绩
+                Integer grade_final = Integer.parseInt(getCellValue(row.getCell(5)));
+                gradeInfo.setGrade_final(grade_final);
+                //总评
+                Integer grade_all = Integer.parseInt(getCellValue(row.getCell(6)));
+                gradeInfo.setGrade_all(grade_all);
+                //学期成绩
+                Integer grade_semester = Integer.parseInt(getCellValue(row.getCell(7)));
+                gradeInfo.setGrade_semester(grade_semester);
+                //学年成绩
+                Integer grade_year = Integer.parseInt(getCellValue(row.getCell(8)));
+                gradeInfo.setGrade_year(grade_year);
+                //是否及格
+                Integer isPass = Integer.parseInt(getCellValue(row.getCell(9)));
+                gradeInfo.setIsPass(isPass);
+                //学期
+                String term = getCellValue(row.getCell(10));
+                gradeInfo.setTerm(term);
+                //学年
+                Integer schoolYear = Integer.parseInt(getCellValue(row.getCell(11)));
+                gradeInfo.setSchoolYear(schoolYear);
+                gradeInfoList.add(gradeInfo);
+            }
+        }
+        excelMapper.batchGradeInsert(gradeInfoList);  //  批量插入 五秒完成
+        long endTime = System.currentTimeMillis();
+        long totaltime = endTime - startTime;
+        logger.info("【消耗时间为】{}", totaltime);  //  将近两万条数据 3秒解析完成
+        logger.info("【第一条数据为】{}", JSON.toJSON(gradeInfoList.get(0)));
+        return rows;
     }
 
     public String getCellValue(Cell cell) {

@@ -17,6 +17,8 @@ public class GmGradeInfo {
     private Integer grade_mid;
     private Integer grade_final;
     private Integer grade_all;
+    private Integer grade_semester;
+    private Integer grade_year;
     private Integer isPass;
     private Date createAt;
     private Date updateAt;

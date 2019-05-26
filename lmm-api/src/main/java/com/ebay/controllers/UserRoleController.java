@@ -58,7 +58,6 @@ public class UserRoleController {
 				roleModuleRelationService.deleteByRoleId(id);
 				//  删除关联的角色授权
 				teacherRoleRelationService.deleteByRoleId(id);
-
 				return Result.success();
 		}
 
