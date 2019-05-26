@@ -12,7 +12,7 @@ public interface GmStudentTermscoreMapper {
     @Select("select g.*,c.scoreType,c.score " +
         "from gm_gradeinfo g " +
         "left join gm_coruse c on c.courseName=g.courseName " +
-        " where studentNo=#{studentNo} and semester=#{semester} " +
+        "where studentNo=#{studentNo} and semester=#{semester} " +
         "order by c.scoreType,c.score desc,c.courseName")
     List<GmGradeInfo> query(String studentNo, String semester);
 }
