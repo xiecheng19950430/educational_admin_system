@@ -50,4 +50,8 @@ public class GmStudentQualityService {
             });
         }
     }
+
+    public GmStudentQuality findByNoAndSemester(String studentNo, String semester) {
+        return mapper.findByNoAndSemester(studentNo, semester);
+    }
 }

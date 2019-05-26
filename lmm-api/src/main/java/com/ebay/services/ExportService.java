@@ -8,6 +8,7 @@ import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -26,25 +27,35 @@ public class ExportService {
     private GmStudentAssessmentService studentAssessmentService;
     @Autowired
     private GmStudentBodyStatusService studentBodyStatusService;
+    @Autowired
+    private GmStudentQualityService studentQualityService;
+    @Autowired
+    private GmStudentAttendanceService studentAttendanceService;
+    @Autowired
+    private GmStudentTermscoreService studentTermscoreService;
+    @Autowired
+    private GmCourseService courseService;
 
     //学生素质报告导出
     public void exportQualityReportDoc(HttpServletRequest request, HttpServletResponse response) {
-        String classId = request.getParameter("classId");
+        String classIdStr = request.getParameter("classId");
+        Integer classId = null;
+        if (!StringUtils.isEmpty(classIdStr)) classId = Integer.valueOf(classIdStr);
         String name = request.getParameter("name");
         String studentNo = request.getParameter("studentNo");
 
 
         InputStream is = null;
         try {
-            //读取模板
-            String path = this.getClass().getResource("/temp").getPath();
-            String tempName = "综合素质报告单.加水印.docx";
-
-            File tempFile = new File(path + "/" + tempName);
-
             //查找学生 遍历 生成空白模板
-            List<GmStudent> studentList = studentService.query(Integer.valueOf(classId), name, studentNo);
+            List<GmStudent> studentList = studentService.query(classId, name, studentNo);
             if (!CollectionUtils.isEmpty(studentList)) {
+                //读取模板
+                String path = this.getClass().getResource("/temp").getPath();
+                String tempName = "综合素质报告单.加水印.docx";
+
+                File tempFile = new File(path + "/" + tempName);
+
                 if (studentList.size() > 1) {
                     Map<String, List<File>> classMap = new HashMap();
                     for (GmStudent student : studentList) {
@@ -220,15 +231,19 @@ public class ExportService {
 
         Map map = new HashMap();
         map.put("student", student);//学生基本信息
-        GmStudentSub sub = studentSubService.findByNoAndSemester(stuNo, sn);
-        map.put("sub", sub);//学生基本信息
-        map.put("attendance", "xxx");//出勤信息
-        map.put("termscore", "xxx");//学科课程学习状况
-        map.put("quality", "xxx");//综合素质评价
+//        GmStudentSub sub = studentSubService.findByNoAndSemester(stuNo, sn);
+//        map.put("sub", sub);//学生基本信息
+        GmStudentAttendance attendance = studentAttendanceService.findByNoAndSemester(stuNo, sn);
+        map.put("attendance", attendance);//出勤信息
+        List<GmGradeInfo> gmGradeInfoList = studentTermscoreService.query(stuNo, sn);
+        map.put("termscore", gmGradeInfoList);//学科课程学习状况
+        GmStudentQuality quality = studentQualityService.findByNoAndSemester(stuNo, sn);
+        map.put("quality", quality);//综合素质评价
         GmStudentAssessment assessment = studentAssessmentService.findByNoAndSemester(stuNo, sn);
         map.put("assessment", assessment);//综合能力考核
         GmStudentBodyStatus bodyStatus = studentBodyStatusService.findByNoAndSemester(stuNo, sn);
         map.put("bodystatus", bodyStatus);//身体状况
+
         return map;
     }
 }

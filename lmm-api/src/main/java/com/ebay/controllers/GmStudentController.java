@@ -128,7 +128,7 @@ public class GmStudentController {
         return Result.success();
     }
 
-    //Excel综合能力考核
+    //Excel学生信息
     @RequestMapping("/import/sub")
     @ResponseBody
     public Result importSub(@RequestParam MultipartFile file) {

@@ -78,9 +78,9 @@
     </update>
     <select id="query" resultMap="baseResultMap">
         select s.*,c.name as className
-        from `gm_student s`
+        from gm_student s
         left join gm_class c on c.id=s.classId
-        WHERE isDelete=0
+        WHERE s.isDelete=0
         <if test="classId != null">and s.classId=#{classId}</if>
         <if test="name != null and name != ''">and s.name=#{name}</if>
         <if test="studentNo != null and studentNo != ''">and s.studentNo=#{studentNo}</if>
