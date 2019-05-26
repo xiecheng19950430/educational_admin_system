@@ -121,6 +121,8 @@ CREATE TABLE `gm_gradeinfo` (
   `grade_mid` int(11) DEFAULT NULL COMMENT '期中成绩',
   `grade_final` int(11) DEFAULT NULL COMMENT '期末成绩',
   `grade_all` int(11) DEFAULT NULL COMMENT '总评',
+  `grade_semester` int(11) DEFAULT NULL COMMENT '学期成绩',
+  `grade_year` int(11) DEFAULT NULL COMMENT '学年成绩',
   `classId` int(11) NOT NULL COMMENT '班级Id',
   `teacherId` int(11) NOT NULL COMMENT '教师Id',
   `createAt` datetime DEFAULT NULL,

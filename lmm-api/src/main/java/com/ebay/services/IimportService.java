@@ -242,14 +242,20 @@ public class IimportService {
                 //总评
                 Integer grade_all = Integer.parseInt(getCellValue(row.getCell(6)));
                 gradeInfo.setGrade_all(grade_all);
+                //学期成绩
+                Integer grade_semester = Integer.parseInt(getCellValue(row.getCell(7)));
+                gradeInfo.setGrade_semester(grade_semester);
+                //学年成绩
+                Integer grade_year = Integer.parseInt(getCellValue(row.getCell(8)));
+                gradeInfo.setGrade_year(grade_year);
                 //是否及格
-                Integer isPass = Integer.parseInt(getCellValue(row.getCell(8)));
+                Integer isPass = Integer.parseInt(getCellValue(row.getCell(9)));
                 gradeInfo.setIsPass(isPass);
                 //学期
-                String term = getCellValue(row.getCell(9));
+                String term = getCellValue(row.getCell(10));
                 gradeInfo.setTerm(term);
                 //学年
-                Integer schoolYear = Integer.parseInt(getCellValue(row.getCell(10)));
+                Integer schoolYear = Integer.parseInt(getCellValue(row.getCell(11)));
                 gradeInfo.setSchoolYear(schoolYear);
                 gradeInfoList.add(gradeInfo);
             }

@@ -1,7 +1,7 @@
 package com.ebay.models;
 import lombok.*;
 @Data
-public class StudentAttendance {
+public class GmStudentAttendance {
     private Integer id;
     //学号
     private String studentNo;
