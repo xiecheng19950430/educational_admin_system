@@ -30,4 +30,8 @@ public class GmStudentAttendanceService {
             });
         }
     }
+
+    public GmStudentAttendance findByNoAndSemester(String studentNo, String semester) {
+        return mapper.findByNoAndSemester(studentNo, semester);
+    }
 }

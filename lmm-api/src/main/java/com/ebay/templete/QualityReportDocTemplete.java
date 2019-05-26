@@ -50,32 +50,31 @@ public class QualityReportDocTemplete {
         }
         DocxUtil.searchAndReplace(document, stu);//替换模板中的对应变量。
 
-        //查找综合素质评价 匹配综合素质评价
-        Map<String, String> quality = new HashMap<>();
-        for (int i = 1; i < 7; i++) {
-            quality.put("$s_" + i, "xxx");
-            quality.put("$c_" + i, "xxx");
-            quality.put("$t_" + i, "xxx");
+        GmStudentQuality studentQuality = (GmStudentQuality) dataMap.get("quality");
+        if (!ObjectUtils.isEmpty(studentQuality)) {
+            //查找综合素质评价 匹配综合素质评价
+            Map<String, String> quality = new HashMap<>();
+            quality.put("$s_1", studentQuality.getMoralQualitySelfAssessment());
+            quality.put("$c_1", studentQuality.getMoralQualityMutualAssessment());
+            quality.put("$t_1", studentQuality.getMoralQualityTeacherAssessment());
+            quality.put("$s_2", studentQuality.getCivicQualitySelfAssessment());
+            quality.put("$c_2", studentQuality.getCivicQualityMutualAssessment());
+            quality.put("$t_2", studentQuality.getCivicQualityTeacherAssessment());
+            quality.put("$s_3", studentQuality.getLearningQualitySelfAssessment());
+            quality.put("$c_3", studentQuality.getLearningQualityMutualAssessment());
+            quality.put("$t_3", studentQuality.getLearningQualityTeacherAssessment());
+            quality.put("$s_4", studentQuality.getCommAndCooperSelfAssessment());
+            quality.put("$c_4", studentQuality.getCommAndCooperMutualAssessment());
+            quality.put("$t_4", studentQuality.getCommAndCooperTeacherAssessment());
+            quality.put("$s_5", studentQuality.getSportsHealthSelfAssessment());
+            quality.put("$c_5", studentQuality.getSportsHealthMutualAssessment());
+            quality.put("$t_5", studentQuality.getSportsHealthTeacherAssessment());
+            quality.put("$s_6", studentQuality.getAestheticExpressionSelfAssessment());
+            quality.put("$c_6", studentQuality.getAestheticExpressionMutualAssessment());
+            quality.put("$t_6", studentQuality.getAestheticExpressionTeacherAssessment());
+            DocxUtil.searchAndReplace(document, quality);//替换模板中的对应变量。
         }
-//            quality.put("$s_1", "xxx");
-//            quality.put("$c_1", "xxx");
-//            quality.put("$t_1", "xxx");
-//            quality.put("$s_2", "xxx");
-//            quality.put("$c_2", "xxx");
-//            quality.put("$t_2", "xxx");
-//            quality.put("$s_3", "xxx");
-//            quality.put("$c_3", "xxx");
-//            quality.put("$t_3", "xxx");
-//            quality.put("$s_4", "xxx");
-//            quality.put("$c_4", "xxx");
-//            quality.put("$t_4", "xxx");
-//            quality.put("$s_5", "xxx");
-//            quality.put("$c_5", "xxx");
-//            quality.put("$t_5", "xxx");
-//            quality.put("$s_6", "xxx");
-//            quality.put("$c_6", "xxx");
-//            quality.put("$t_6", "xxx");
-        DocxUtil.searchAndReplace(document, quality);//替换模板中的对应变量。
+
 
         //查找成绩表 匹配sub开头的 //循环匹配
         Map<String, String> score = new HashMap<>();
@@ -97,7 +96,6 @@ public class QualityReportDocTemplete {
 //            score.put("$A5", "xxx");
 
         score.put("$stuNonPercentageCourse", "xxx");
-
         DocxUtil.searchAndReplace(document, score);//替换模板中的对应变量。
 
         GmStudentAssessment assessment = (GmStudentAssessment) dataMap.get("assessment");
@@ -111,14 +109,18 @@ public class QualityReportDocTemplete {
             DocxUtil.searchAndReplace(document, ass);//替换模板中的对应变量。
         }
 
-        //查找考勤表 匹配考勤信息
-        Map<String, String> att = new HashMap<>();
-        att.put("本学期上课$allDay", "xxx");
-        att.put("该生实际上课$att", "xxx");
-        att.put("$beL", "xxx");
-        att.put("$sickL", "xxx");
-        att.put("$l", "xxx");
-        DocxUtil.searchAndReplace(document, att);//替换模板中的对应变量。
+        GmStudentAttendance attendance = (GmStudentAttendance) dataMap.get("attendance");
+        if (!ObjectUtils.isEmpty(attendance)) {
+            //查找考勤表 匹配考勤信息
+            Map<String, String> att = new HashMap<>();
+            att.put("本学期上课$allDay", "本学期上课" + 0);
+            att.put("该生实际上课$att", "该生实际上课" + 0);
+            att.put("$beL", attendance.getLateNumberOfDays().toString());
+            att.put("$sickL", attendance.getSickLeaveNumberOfDays().toString());
+            att.put("$l", attendance.getAffairLeaveNumberOfDays().toString());
+            DocxUtil.searchAndReplace(document, att);//替换模板中的对应变量。
+        }
+
 
         return document;
     }
