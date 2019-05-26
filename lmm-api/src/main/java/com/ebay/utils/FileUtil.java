@@ -1,8 +1,6 @@
 package com.ebay.utils;
 
-import javax.servlet.http.HttpServletResponse;
 import java.io.*;
-import java.net.URLEncoder;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
@@ -41,7 +39,7 @@ public class FileUtil {
             e.printStackTrace();
         } finally {
             //压缩后删除文件
-//            deleteFiles(srcfile);
+            deleteFiles(srcfile);
         }
     }
 
@@ -65,41 +63,6 @@ public class FileUtil {
         }
     }
 
-    public static void downFile(HttpServletResponse response, File file) {
-        try {
-            if (file.exists()) {
-//                InputStream ins = new FileInputStream(file.getPath());
-
-//                int bytesRead = 0;
-//                byte[] buffer = new byte[8192];
-//                //开始向网络传输文件流
-//                while ((bytesRead = bins.read(buffer, 0, 8192)) != -1) {
-//                    bouts.write(buffer, 0, bytesRead);
-//                }
-
-                BufferedInputStream bins = new BufferedInputStream(new FileInputStream(file));// 放到缓冲流里面
-                byte[] buffer = new byte[bins.available()];
-                bins.read(buffer);
-                bins.close();
-
-                BufferedOutputStream bouts = new BufferedOutputStream(response.getOutputStream());// 获取文件输出IO流
-//                response.setContentType("application/x-msdownload");
-                response.setContentType("application/octet-stream;charset=UTF-8");
-                response.setHeader("Content-disposition", "attachment;filename=" + URLEncoder.encode(file.getName(), "GBK"));// 设置头部信息
-                bouts.write(buffer);
-
-                bouts.flush();// 这里一定要调用flush()方法
-                bouts.close();
-            } else {
-                response.sendRedirect("../error.jsp");
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            //下载后删除文件
-//            if (file != null) deleteFile(file);
-        }
-    }
 
     /**
      * 复制文件

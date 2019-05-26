@@ -43,4 +43,8 @@ public class GmStudentService {
     public int delete(int id){
         return mapper.deleteById(id);
     }
+
+    public List<GmStudent> query(Integer classId, String name, String studentNo) {
+        return mapper.query(classId, name, studentNo);
+    }
 }

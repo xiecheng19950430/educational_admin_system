@@ -33,4 +33,6 @@ public interface GmStudentMapper {
     Integer deleteById(@Param("id") Integer id);
 
 
+    List<GmStudent> query(@Param("classId")Integer classId, @Param("name")String name, @Param("studentNo")String studentNo);
+
 }

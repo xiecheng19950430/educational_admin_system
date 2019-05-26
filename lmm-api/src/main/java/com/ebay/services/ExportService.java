@@ -1,26 +1,30 @@
 package com.ebay.services;
 
+import com.ebay.models.GmStudent;
 import com.ebay.templete.QualityReportDocTemplete;
 import com.ebay.utils.FileUtil;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class ExportService {
+    @Autowired
+    private GmStudentService studentService;
 
     //学生素质报告导出
     public void exportQualityReportDoc(HttpServletRequest request, HttpServletResponse response) {
         String classId = request.getParameter("classId");
         String name = request.getParameter("name");
-        String stuNo = request.getParameter("stuNo");
+        String studentNo = request.getParameter("studentNo");
 
 
         InputStream is = null;
@@ -32,31 +36,49 @@ public class ExportService {
             File tempFile = new File(path + "/" + tempName);
 
             //查找学生 遍历 生成空白模板
-            List<File> files = new ArrayList<>();
-            for (int i = 1; i < 3; i++) {
-                File newFile = FileUtil.createNewFile(tempFile, "测试xx" + i + ".docx", path);
+            List<GmStudent> studentList = studentService.query(Integer.valueOf(classId), name, studentNo);
+            if (!CollectionUtils.isEmpty(studentList)) {
+                if (studentList.size() > 1) {
+                    List<File> files = new ArrayList<>();
+                    for (GmStudent student : studentList) {
 
-                //填充参数
-                is = new FileInputStream(newFile);
-                XWPFDocument document = new XWPFDocument(is);
-                QualityReportDocTemplete.temp(document);
+                        File newFile = FileUtil.createNewFile(tempFile, student.getName() + "_" + student.getStudentNo() + ".docx", path);
 
-                //写入文件
-                FileOutputStream fos = new FileOutputStream(newFile);
-                document.write(fos);
-                fos.flush();
-                fos.close();
+                        //获取学生素质报告所需参数
+                        Map map = this.getQualityReport(student);
 
-                files.add(newFile);
+                        //填充参数
+                        is = new FileInputStream(newFile);
+                        XWPFDocument document = new XWPFDocument(is);
+                        QualityReportDocTemplete.temp(document, map);
+
+                        //写入文件
+                        FileOutputStream fos = new FileOutputStream(newFile);
+                        document.write(fos);
+                        fos.flush();
+                        fos.close();
+
+                        files.add(newFile);
+                    }
+
+
+                    File zipFile = new File(path, "测试xxx.zip");
+                    zipFile.createNewFile();
+                    FileUtil.zipFiles(files, zipFile);
+
+                    this.downZip(request, response, zipFile.getName(), zipFile.getPath());
+                } else {
+                    GmStudent student = studentList.get(0);
+                    //获取学生素质报告所需参数
+                    Map map = this.getQualityReport(student);
+
+                    is = new FileInputStream(tempFile);
+                    XWPFDocument document = new XWPFDocument(is);
+                    QualityReportDocTemplete.temp(document, map);
+                    this.setBrowser(request, response, document, student.getName() + "_" + student.getStudentNo() + ".docx");
+                }
             }
 
-
-            File zipFile = new File(path, "测试xxx.zip");
-            zipFile.createNewFile();
-            FileUtil.zipFiles(files, zipFile);
-
-//            FileUtil.downFile(response, zipFile);
-            this.downZip(response, zipFile.getName(), zipFile.getPath());
 
 //            setBrowser(request, response, document, "测试.doc");
 //            this.setBrowserWithZip(request, response, document, map);
@@ -83,16 +105,7 @@ public class ExportService {
         try {
             //清空response
             response.reset();
-            //设置response的Header
-            if (request.getHeader("User-Agent").toLowerCase().indexOf("firefox") > 0) {
-                fileName = new String(fileName.getBytes(StandardCharsets.UTF_8), "ISO8859-1"); // firefox浏览器
-            } else if (request.getHeader("User-Agent").toUpperCase().indexOf("MSIE") > 0) {
-                fileName = URLEncoder.encode(fileName, "UTF-8");// IE浏览器
-            } else if (request.getHeader("User-Agent").toUpperCase().indexOf("CHROME") > 0) {
-                fileName = new String(fileName.getBytes(StandardCharsets.UTF_8), "ISO8859-1");// 谷歌
-            } else {  //其他浏览器
-                fileName = new String(fileName.getBytes(StandardCharsets.UTF_8), StandardCharsets.ISO_8859_1);
-            }
+            fileName = this.formatFileName(request, fileName);
             response.addHeader("Content-Disposition", "attachment;filename=" + fileName);
             os = new BufferedOutputStream(response.getOutputStream());
             response.setContentType("application/vnd.ms-word;charset=UTF-8");
@@ -117,18 +130,20 @@ public class ExportService {
     }
 
 
-    public void downZip(HttpServletResponse response, String filename, String path) {
+    private void downZip(HttpServletRequest request, HttpServletResponse response, String filename, String path) {
         if (filename != null) {
             FileInputStream is = null;
             BufferedInputStream bs = null;
             OutputStream os = null;
+            File file = null;
             try {
-                File file = new File(path);
+                file = new File(path);
                 if (file.exists()) {
                     //设置Headers
                     response.setHeader("Content-Type", "application/octet-stream");
+                    filename = this.formatFileName(request, filename);
                     //设置下载的文件的名称-该方式已解决中文乱码问题
-                    response.setHeader("Content-Disposition", "attachment;filename=" + new String(filename.getBytes("gb2312"), "ISO8859-1"));
+                    response.setHeader("Content-Disposition", "attachment;filename=" + filename);
                     is = new FileInputStream(file);
                     bs = new BufferedInputStream(is);
                     os = response.getOutputStream();
@@ -155,10 +170,37 @@ public class ExportService {
                         os.flush();
                         os.close();
                     }
+                    //删除文件
+                    if (file != null) FileUtil.deleteFile(file);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
         }
+    }
+
+    private String formatFileName(HttpServletRequest request, String fileName) throws UnsupportedEncodingException {
+        //设置response的Header
+        if (request.getHeader("User-Agent").toLowerCase().indexOf("firefox") > 0) {
+            fileName = new String(fileName.getBytes(StandardCharsets.UTF_8), "ISO8859-1"); // firefox浏览器
+        } else if (request.getHeader("User-Agent").toUpperCase().indexOf("MSIE") > 0) {
+            fileName = URLEncoder.encode(fileName, "UTF-8");// IE浏览器
+        } else if (request.getHeader("User-Agent").toUpperCase().indexOf("CHROME") > 0) {
+            fileName = new String(fileName.getBytes(StandardCharsets.UTF_8), "ISO8859-1");// 谷歌
+        } else {  //其他浏览器
+            fileName = new String(fileName.getBytes(StandardCharsets.UTF_8), StandardCharsets.ISO_8859_1);
+        }
+        return fileName;
+    }
+
+    private Map getQualityReport(GmStudent student) {
+        Map map = new HashMap();
+        map.put("student", "xxx");//学生基本信息
+        map.put("attendance", "xxx");//出勤信息
+        map.put("termscore", "xxx");//学科课程学习状况
+        map.put("quality", "xxx");//综合素质评价
+        map.put("assessment", "xxx");//综合能力考核
+        map.put("bodystatus", "xxx");//身体状况
+        return map;
     }
 }
