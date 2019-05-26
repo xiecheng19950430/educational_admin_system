@@ -3,13 +3,12 @@ package com.ebay.controllers;
 import com.ebay.common.Result;
 import com.ebay.common.utils.BeanUtil;
 import com.ebay.models.GmStudent;
-import com.ebay.services.GmStudentService;
-import com.ebay.services.IimportService;
+import com.ebay.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.ObjectUtils;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -20,6 +19,8 @@ public class GmStudentController {
     private GmStudentService service;
     @Autowired
     private IimportService iimportService;
+    @Autowired
+    private GmStudentBodyStatusService studentBodyStatusService;
 
     //列表
     @RequestMapping("/list")
@@ -102,5 +103,13 @@ public class GmStudentController {
         return Result.success();
     }
 
+
+    //Excel学生身体状况
+    @RequestMapping("/import/bodystatus")
+    @ResponseBody
+    public Result importBodyStatus(@RequestParam MultipartFile file) {
+        studentBodyStatusService.excelImport(file);
+        return Result.success();
+    }
 
 }
