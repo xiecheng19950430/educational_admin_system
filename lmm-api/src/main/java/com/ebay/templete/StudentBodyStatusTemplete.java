@@ -28,6 +28,7 @@ public class StudentBodyStatusTemplete {
                     bodyStatus.setLeftVision(ExcelUtil.getCellValue(row.getCell(4)));
                     bodyStatus.setRightVision(ExcelUtil.getCellValue(row.getCell(5)));
                     bodyStatus.setHealthStatus(ExcelUtil.getCellValue(row.getCell(6)));
+//                    学年学期
                     bodyStatuses.add(bodyStatus);
                 }
             }

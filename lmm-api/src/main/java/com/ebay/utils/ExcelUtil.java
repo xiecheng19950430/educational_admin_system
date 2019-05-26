@@ -9,6 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 public class ExcelUtil {
@@ -70,5 +71,12 @@ public class ExcelUtil {
     public static String formatDouble(String num) {
         Double d = Double.parseDouble(num);
         return new DecimalFormat("0").format(d);
+    }
+
+    public static String getSemester() {
+        Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.WEEK_OF_YEAR);
+        return year + "-" + (month < 8 ? "1" : "2");
     }
 }
