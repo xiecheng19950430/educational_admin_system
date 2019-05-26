@@ -13,8 +13,8 @@ public class QualityReportDocTemplete {
         //计算通用信息 学年学期，假期时间，下学期开学时间，打印日期
         Calendar calendar = Calendar.getInstance();
         int year = calendar.get(Calendar.YEAR);
-        int month = calendar.get(Calendar.WEEK_OF_YEAR);
-        int day = calendar.get(Calendar.DATE);
+        int month = calendar.get(Calendar.MONTH) + 1;
+//        int day = calendar.get(Calendar.DATE);
         Map<String, String> common = new HashMap<>();
         //标题
         common.put("$schoolYear", year + "-" + (year + 1));//学年

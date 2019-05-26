@@ -7,5 +7,5 @@ import org.apache.ibatis.annotations.Mapper;import org.apache.ibatis.annotations
 public interface GmStudentBodyStatusMapper {
     int insert(GmStudentBodyStatus bodyStatus);
 
-    boolean findByStudentNoWithOutSelf(@Param("studentNo")String studentNo, @Param("id")Integer id);
+    boolean findByStudentNoWithOutSelf(@Param("studentNo") String studentNo, @Param("semester")String semester, @Param("id") Integer id);
 }

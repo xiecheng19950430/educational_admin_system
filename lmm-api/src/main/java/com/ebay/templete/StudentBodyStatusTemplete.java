@@ -29,6 +29,7 @@ public class StudentBodyStatusTemplete {
                     bodyStatus.setRightVision(ExcelUtil.getCellValue(row.getCell(5)));
                     bodyStatus.setHealthStatus(ExcelUtil.getCellValue(row.getCell(6)));
 //                    学年学期
+                    bodyStatus.setSemester(ExcelUtil.getSemester());
                     bodyStatuses.add(bodyStatus);
                 }
             }
