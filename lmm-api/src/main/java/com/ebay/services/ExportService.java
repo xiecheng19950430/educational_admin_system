@@ -38,7 +38,7 @@ public class ExportService {
         try {
             //读取模板
             String path = this.getClass().getResource("/temp").getPath();
-            String tempName = "综合素质报告单.加水印（复件）.docx";
+            String tempName = "综合素质报告单.加水印.docx";
 
             File tempFile = new File(path + "/" + tempName);
 
