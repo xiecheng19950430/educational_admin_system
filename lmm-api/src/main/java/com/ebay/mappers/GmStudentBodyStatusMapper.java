@@ -1,11 +1,16 @@
 package com.ebay.mappers;
 
 import com.ebay.models.GmStudentBodyStatus;
-import org.apache.ibatis.annotations.Mapper;import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.*;
 
 @Mapper
 public interface GmStudentBodyStatusMapper {
     int insert(GmStudentBodyStatus bodyStatus);
 
-    boolean findByStudentNoWithOutSelf(@Param("studentNo") String studentNo, @Param("semester")String semester, @Param("id") Integer id);
+    boolean findByStudentNoWithOutSelf(@Param("studentNo") String studentNo, @Param("semester") String semester, @Param("id") Integer id);
+
+    @Select("select * from gm_student_bodystatus where studentNo=#{studentNo} and semester=#{semester}")
+    GmStudentBodyStatus findByNoAndSemester(String studentNo, String semester);
+
+    int update(GmStudentBodyStatus bodyStatuses);
 }

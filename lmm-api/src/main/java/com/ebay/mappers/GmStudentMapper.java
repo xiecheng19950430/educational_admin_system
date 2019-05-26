@@ -1,9 +1,7 @@
 package com.ebay.mappers;
 
 import com.ebay.models.GmStudent;
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -11,17 +9,17 @@ import java.util.List;
 public interface GmStudentMapper {
 
     List<GmStudent> getStudentList(@Param("classId") Integer classId,
-																	 @Param("studentNo") String studentNo,
-																	 @Param("isDelete") Integer idDelete,
-																	 @Param("name") String name,
-																	 @Param("birthday") String birthday,
-																	 @Param("start") Integer start,
-																	 @Param("size") Integer size);
+                                   @Param("studentNo") String studentNo,
+                                   @Param("isDelete") Integer idDelete,
+                                   @Param("name") String name,
+                                   @Param("birthday") String birthday,
+                                   @Param("start") Integer start,
+                                   @Param("size") Integer size);
 
     GmStudent findById(@Param("id") Integer id);
 
     int count(@Param("studentNo") String studentNo, @Param("isDelete") Integer isDelete,
-							@Param("name") String name, @Param("birthday") String birthday);
+              @Param("name") String name, @Param("birthday") String birthday);
 
     GmStudent findByClassId(@Param("classId") Integer classId, @Param("role") String role);
 
@@ -33,7 +31,10 @@ public interface GmStudentMapper {
     Integer deleteById(@Param("id") Integer id);
 
 
-    List<GmStudent> query(@Param("classId")Integer classId, @Param("name")String name, @Param("studentNo")String studentNo);
+    List<GmStudent> query(@Param("classId") Integer classId, @Param("name") String name, @Param("studentNo") String studentNo);
 
-    boolean findByStudentNoWithOutSelf(@Param("studentNo")String studentNo, @Param("id")Integer id);
+    boolean findByStudentNoWithOutSelf(@Param("studentNo") String studentNo, @Param("id") Integer id);
+
+    @Select("select * from gm_student where studentNo=#{studentNo} and isDelete=0")
+    GmStudent findByStudentNo(String studentNo);
 }

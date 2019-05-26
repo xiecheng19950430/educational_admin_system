@@ -3,6 +3,7 @@ package com.ebay.models;
 import lombok.*;
 
 import java.util.Date;
+
 //身体状况
 @Data
 public class GmStudentBodyStatus {
@@ -26,4 +27,5 @@ public class GmStudentBodyStatus {
     private String semester;
 
     private Date createAt;
+    private Date updateAt;
 }

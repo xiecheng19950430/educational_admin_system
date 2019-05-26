@@ -91,6 +91,7 @@
         select 1
         from gm_student
         where studentNo=#{studentNo}
+        and isDelete=0
         <if test="id != null">and id=#{id}</if>
         )
     </select>

@@ -51,4 +51,8 @@ public class GmStudentService {
     public boolean findByStudentNoWithOutSelf(String studentNo, Integer id) {
         return mapper.findByStudentNoWithOutSelf(studentNo, id);
     }
+
+    public GmStudent findByStudentNo(String studentNo) {
+        return mapper.findByStudentNo(studentNo);
+    }
 }

@@ -1,5 +1,6 @@
 package com.ebay.utils;
 
+import com.ebay.common.utils.StringUtils;
 import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -69,8 +70,11 @@ public class ExcelUtil {
 
     //去小数点 .0
     public static String formatDouble(String num) {
-        Double d = Double.parseDouble(num);
-        return new DecimalFormat("0").format(d);
+        if (StringUtils.isNotBlank(num)) {
+            Double d = Double.parseDouble(num);
+            return new DecimalFormat("0").format(d);
+        }
+        return "";
     }
 
     //获取学年学期

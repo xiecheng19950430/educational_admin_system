@@ -11,7 +11,7 @@ import java.util.List;
 public class StudentBodyStatusTemplete {
     public static List<GmStudentBodyStatus> temp(MultipartFile file) {
         Workbook workbook = ExcelUtil.getWorkBook(file);
-        List<GmStudentBodyStatus> bodyStatuses = new ArrayList<>();
+        List<GmStudentBodyStatus> list = new ArrayList<>();
         if (workbook != null) {
             Sheet sheet = workbook.getSheetAt(0);
             int rows = sheet.getLastRowNum();
@@ -30,10 +30,10 @@ public class StudentBodyStatusTemplete {
                     bodyStatus.setHealthStatus(ExcelUtil.getCellValue(row.getCell(6)));
 //                    学年学期
                     bodyStatus.setSemester(ExcelUtil.getSemester());
-                    bodyStatuses.add(bodyStatus);
+                    list.add(bodyStatus);
                 }
             }
         }
-        return bodyStatuses;
+        return list;
     }
 }

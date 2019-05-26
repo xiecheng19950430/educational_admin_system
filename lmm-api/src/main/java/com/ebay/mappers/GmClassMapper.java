@@ -27,11 +27,13 @@ public interface GmClassMapper {
     @Delete("delete from gm_class where year=#{year}")
     void deleteByYear(int year);
 
-    @Select("select max(cast(classNo as int))  from gm_class")
-    Integer getLatestClassNo();
+    Integer getLatestClassNo(@Param("year")Integer year);
 
     @Select("select gc.name  from gm_class gc left join gm_class_has_gm_teacher cht on cht.gm_class_id=gc.id where cht.gm_teacher_id=#{teacherId} ")
     List<String> queryNameByTeacherId(int teacherId);
 
     boolean findByNameWithOutSelf(@Param("id") Integer id, @Param("name") String name);
+
+    @Select("select * from gm_class where name=#{name} and isDelete=0")
+    GmClass findByName(String name);
 }
