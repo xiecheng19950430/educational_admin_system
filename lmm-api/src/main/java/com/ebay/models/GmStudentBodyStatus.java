@@ -2,6 +2,8 @@ package com.ebay.models;
 
 import lombok.*;
 
+import java.util.Date;
+
 @Data
 public class GmStudentBodyStatus {
     private Integer id;
@@ -20,4 +22,5 @@ public class GmStudentBodyStatus {
     //    健康状况
     private String healthStatus;
 
+    private Date createAt;
 }

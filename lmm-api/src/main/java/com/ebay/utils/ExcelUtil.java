@@ -1,8 +1,8 @@
 package com.ebay.utils;
 
-import com.ebay.models.GmStudentBodyStatus;
 import org.apache.poi.hssf.usermodel.*;
-import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -12,7 +12,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class ExcelUtil {
-    public static Workbook getWorkBook(MultipartFile file){
+    public static Workbook getWorkBook(MultipartFile file) {
         Workbook workbook = null;
         String filename = file.getOriginalFilename();//  获取文件名
         try {
@@ -32,7 +32,7 @@ public class ExcelUtil {
         if (cell != null) {
             switch (cell.getCellType()) {
                 case HSSFCell.CELL_TYPE_NUMERIC:// 数字
-                    value = cell.getNumericCellValue() + " ";
+                    value = cell.getNumericCellValue() + "";
                     if (HSSFDateUtil.isCellDateFormatted(cell)) {
                         Date date = cell.getDateCellValue();
                         if (date != null) {
@@ -40,10 +40,11 @@ public class ExcelUtil {
                         } else {
                             value = "";
                         }
-                    } else {
-                        //  解析cell时候 数字类型默认是double类型的 但是想要获取整数类型 需要格式化
-                        value = new DecimalFormat("0").format(cell.getNumericCellValue());
                     }
+//                    else {
+//                        //  解析cell时候 数字类型默认是double类型的 但是想要获取整数类型 需要格式化
+//                        value = new DecimalFormat("0").format(cell.getNumericCellValue());
+//                    }
                     break;
                 case HSSFCell.CELL_TYPE_STRING: //  字符串
                     value = cell.getStringCellValue();
@@ -63,5 +64,11 @@ public class ExcelUtil {
             }
         }
         return value.trim();
+    }
+
+    //去小数点 .0
+    public static String formatDouble(String num) {
+        Double d = Double.parseDouble(num);
+        return new DecimalFormat("0").format(d);
     }
 }

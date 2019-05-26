@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ebay.mappers.GmStudentBodyStatusMapper">
+    <resultMap id="baseResultMap" type="com.ebay.models.GmStudentBodyStatus"/>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        insert into gm_student_bodystatus
+        (studentNo,name,height,weight,leftVision,rightVision,healthStatus,createAt )
+        values
+        (#{studentNo},#{name},#{height},#{weight},#{leftVision},#{rightVision},#{healthStatus},now() )
+    </insert>
+    <select id="findByStudentNoWithOutSelf" resultType="boolean">
+        select exists (
+        select 1
+        from gm_student_bodystatus
+        where studentNo=#{studentNo}
+        <if test="id != null">and id=#{id}</if>
+        )
+    </select>
+</mapper>
