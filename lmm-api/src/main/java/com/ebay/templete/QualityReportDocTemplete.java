@@ -4,6 +4,7 @@ import com.ebay.common.DateUtil;
 import com.ebay.models.*;
 import com.ebay.utils.DocxUtil;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 
 import java.util.*;
@@ -75,28 +76,48 @@ public class QualityReportDocTemplete {
             DocxUtil.searchAndReplace(document, quality);//替换模板中的对应变量。
         }
 
-
-        //查找成绩表 匹配sub开头的 //循环匹配
-        Map<String, String> score = new HashMap<>();
-        String az = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        for (int i = 1; i < 17; i++) {
-            String p = az.substring(i - 1, i);
-            score.put("$sub" + i, "xxx");
-            score.put("$" + p + 1, "xxx");
-            score.put("$" + p + 2, "xxx");
-            score.put("$" + p + 3, "xxx");
-            score.put("$" + p + 4, "xxx");
-            score.put("$" + p + 5, "xxx");
+        List<GmGradeInfo> termscore = (List<GmGradeInfo>) dataMap.get("termscore");
+        if (!CollectionUtils.isEmpty(termscore)) {
+            //查找成绩表 匹配sub开头的 //循环匹配
+            Map<String, String> score = new HashMap<>();
+            String az = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            for (int i = 1; i < 17; i++) {
+                String p = az.substring(i - 1, i);
+                if (termscore.size() > i - 1) {
+                    GmGradeInfo info = termscore.get(i - 1);
+                    score.put("$sub" + i, info.getCourseName());
+                    if (info.getGrade_ordinary() != null)
+                        score.put("$" + p + 1, info.getGrade_ordinary().toString());
+                    else
+                        score.put("$" + p + 1, "");
+                    if (info.getGrade_mid() != null)
+                        score.put("$" + p + 2, info.getGrade_mid().toString());
+                    else
+                        score.put("$" + p + 2, "");
+                    if (info.getGrade_final() != null)
+                        score.put("$" + p + 3, info.getGrade_final().toString());
+                    else
+                        score.put("$" + p + 3, "");
+                    if (info.getGrade_semester() != null)
+                        score.put("$" + p + 4, info.getGrade_semester().toString());
+                    else
+                        score.put("$" + p + 4, "");
+                    if (info.getGrade_year() != null)
+                        score.put("$" + p + 5, info.getGrade_year().toString());
+                    else
+                        score.put("$" + p + 5, "");
+                } else {
+                    score.put("$sub" + i, "");
+                    score.put("$" + p + 1, "");
+                    score.put("$" + p + 2, "");
+                    score.put("$" + p + 3, "");
+                    score.put("$" + p + 4, "");
+                    score.put("$" + p + 5, "");
+                }
+            }
+            score.put("$stuNonPercentageCourse", "xxx");
+            DocxUtil.searchAndReplace(document, score);//替换模板中的对应变量。
         }
-//            score.put("$sub1", "xxx");
-//            score.put("$A1", "xxx");
-//            score.put("$A2", "xxx");
-//            score.put("$A3", "xxx");
-//            score.put("$A4", "xxx");
-//            score.put("$A5", "xxx");
-
-        score.put("$stuNonPercentageCourse", "xxx");
-        DocxUtil.searchAndReplace(document, score);//替换模板中的对应变量。
 
         GmStudentAssessment assessment = (GmStudentAssessment) dataMap.get("assessment");
         if (!ObjectUtils.isEmpty(assessment)) {

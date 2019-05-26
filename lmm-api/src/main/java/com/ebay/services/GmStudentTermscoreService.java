@@ -24,4 +24,7 @@ public class GmStudentTermscoreService {
         return mapper.findByNoAndSemester(studentNo, semester);
     }
 
+    public List<GmGradeInfo> query(String studentNo, String semester) {
+        return mapper.query(studentNo, semester);
+    }
 }

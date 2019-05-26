@@ -33,6 +33,8 @@ public class ExportService {
     private GmStudentAttendanceService studentAttendanceService;
     @Autowired
     private GmStudentTermscoreService studentTermscoreService;
+    @Autowired
+    private GmCourseService courseService;
 
     //学生素质报告导出
     public void exportQualityReportDoc(HttpServletRequest request, HttpServletResponse response) {
@@ -233,7 +235,7 @@ public class ExportService {
 //        map.put("sub", sub);//学生基本信息
         GmStudentAttendance attendance = studentAttendanceService.findByNoAndSemester(stuNo, sn);
         map.put("attendance", attendance);//出勤信息
-        List<GmGradeInfo> gmGradeInfoList = studentTermscoreService.queryByNoAndSemester(stuNo, sn);
+        List<GmGradeInfo> gmGradeInfoList = studentTermscoreService.query(stuNo, sn);
         map.put("termscore", gmGradeInfoList);//学科课程学习状况
         GmStudentQuality quality = studentQualityService.findByNoAndSemester(stuNo, sn);
         map.put("quality", quality);//综合素质评价
@@ -241,6 +243,7 @@ public class ExportService {
         map.put("assessment", assessment);//综合能力考核
         GmStudentBodyStatus bodyStatus = studentBodyStatusService.findByNoAndSemester(stuNo, sn);
         map.put("bodystatus", bodyStatus);//身体状况
+
         return map;
     }
 }

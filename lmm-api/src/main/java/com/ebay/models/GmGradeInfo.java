@@ -1,6 +1,6 @@
 package com.ebay.models;
 
-import lombok.Data;
+import lombok.*;
 
 import java.util.Date;
 
@@ -34,4 +34,7 @@ public class GmGradeInfo {
     //学期
     private String term;
     private Integer isDelete;
+
+    private Integer scoreType;
+    private Integer score;
 }
