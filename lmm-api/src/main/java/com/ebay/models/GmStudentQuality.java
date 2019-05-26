@@ -3,7 +3,7 @@ package com.ebay.models;
 import lombok.Data;
 
 @Data
-public class StudentQuality {
+public class GmStudentQuality {
     private Integer id;
     //学号
     private String studentNo;
