@@ -83,7 +83,7 @@ CREATE TABLE `gm_course` (
   `courseNo` varchar(50) DEFAULT NULL COMMENT '课程编号',
   `studentId` int(11) NOT NULL COMMENT '学生id',
   `courseName` varchar(100) DEFAULT NULL COMMENT '课程名称',
-  `openGrade` int(11) DEFAULT NULL COMMENT '开设年级',
+  `openGrade` varchar(50) DEFAULT NULL COMMENT '开设年级',
   `openTerm` varchar(50) DEFAULT NULL COMMENT '开设学期，上学期：lastTerm,下学期：nextTerm',
   `createAt` datetime DEFAULT NULL,
   `updateAt` datetime DEFAULT NULL,

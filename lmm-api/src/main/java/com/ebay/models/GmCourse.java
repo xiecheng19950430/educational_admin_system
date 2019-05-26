@@ -10,7 +10,7 @@ public class GmCourse {
     private String courseNo;
     private Integer studentId;
     private String courseName;
-    private Integer openGrade;
+    private String openGrade;
     private String openTerm;
     private Integer isDelete;
     private Integer type;

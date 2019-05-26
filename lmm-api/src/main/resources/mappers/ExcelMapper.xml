@@ -54,6 +54,25 @@
         <result property="updateAt" column="updateAt"></result>
     </resultMap>
 
+    <resultMap id="baseResultMap" type="com.ebay.models.GmGradeInfo">
+        <id property="id" column="id"></id>
+        <result property="classId" column="classId"></result>
+        <result property="teacherId" column="teacherId"></result>
+        <result property="gradeNo" column="gradeNo"></result>
+        <result property="courseName" column="courseName"></result>
+        <result property="studentNo" column="studentNo"></result>
+        <result property="name" column="name"></result>
+        <result property="grade_ordinary" column="grade_ordinary"></result>
+        <result property="grade_mid" column="grade_mid"></result>
+        <result property="grade_final" column="grade_final"></result>
+        <result property="grade_all" column="grade_all"></result>
+        <result property="isPass" column="isPass"></result>
+        <result property="term" column="term"></result>
+        <result property="schoolYear" column="schoolYear"></result>
+        <result property="isDelete" column="isDelete"></result>
+        <result property="createAt" column="createAt"></result>
+        <result property="updateAt" column="updateAt"></result>
+    </resultMap>
 
     <insert id="batchTeacherInsert" parameterType="java.util.List">
         insert into gm_teacher(workNo,name,loginId,password,sex,birthday,hiredate,position,phone)
@@ -64,24 +83,26 @@
         </foreach>
     </insert>
 
-    <insert id="batchCourseInsert" parameterType="java.util.List">
-        insert into gm_course(courseNo,courseName,openGrade,openTerm,type,status,classAt,description)
-        values
+    <insert id="batchCourseInsert" parameterType="java.util.List" useGeneratedKeys="true">
+
+
         <foreach collection="list" item="item" index="index" separator=",">
+            insert into gm_course(courseNo,courseName,openGrade,openTerm,type,status,description ,classAt
+            )
+            values
             (#{item.courseNo},#{item.courseName},#{item.openGrade},#{item.openTerm},#{item.type},#{item.status},
-            #{item.classAt},#{item.description})
+            ,#{item.description} ,#{item.classAt}
+          )
         </foreach>
     </insert>
 
-
-
-
-
-
-
-
-
-
-
+    <insert id="batchGradeInsert" parameterType="java.util.List">
+        insert into gm_gradeinfo(gradeNo,courseName,studentNo,name,grade_ordinary,grade_mid,grade_final,grade_all,classId,teacherId,isPass,term,schoolYear)
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.gradeNo},#{item.courseName},#{item.studentNo},#{item.name},#{item.grade_ordinary},#{item.grade_mid},#{item.grade_final},#{item.grade_all},
+             #{item.classId},#{item.teacherId},#{item.isPass},#{item.term},#{item.schoolYear})
+        </foreach>
+    </insert>
 
 </mapper>

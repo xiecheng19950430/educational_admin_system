@@ -88,10 +88,10 @@ public class GmStudentController {
         return Result.success(gmStudent);
     }
 
-    //绑定班级学生信息
-    @RequestMapping("/bindStudent")
+    //学生关联班级
+    @RequestMapping("student/bind/class")
     @ResponseBody
-    public Result bindStudent(int classId) {
+    public Result bind(int   classId) {
         GmStudent gmStudent = service.findByClassId(classId, "student");
         if (ObjectUtils.isEmpty(gmStudent)) {
             gmStudent.setRoleName("student");
