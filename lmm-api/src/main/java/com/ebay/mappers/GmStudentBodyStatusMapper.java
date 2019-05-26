@@ -10,7 +10,7 @@ public interface GmStudentBodyStatusMapper {
     boolean findByStudentNoWithOutSelf(@Param("studentNo") String studentNo, @Param("semester") String semester, @Param("id") Integer id);
 
     @Select("select * from gm_student_bodystatus where studentNo=#{studentNo} and semester=#{semester}")
-    GmStudentBodyStatus findByNoAndSemester(String studentNo, String semester);
+    GmStudentBodyStatus findByNoAndSemester(@Param("studentNo")String studentNo, @Param("semester")String semester);
 
     int update(GmStudentBodyStatus bodyStatuses);
 }

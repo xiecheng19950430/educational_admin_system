@@ -8,6 +8,7 @@ import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -29,7 +30,9 @@ public class ExportService {
 
     //学生素质报告导出
     public void exportQualityReportDoc(HttpServletRequest request, HttpServletResponse response) {
-        String classId = request.getParameter("classId");
+        String classIdStr = request.getParameter("classId");
+        Integer classId = null;
+        if (!StringUtils.isEmpty(classIdStr)) classId = Integer.valueOf(classIdStr);
         String name = request.getParameter("name");
         String studentNo = request.getParameter("studentNo");
 
@@ -43,7 +46,7 @@ public class ExportService {
             File tempFile = new File(path + "/" + tempName);
 
             //查找学生 遍历 生成空白模板
-            List<GmStudent> studentList = studentService.query(Integer.valueOf(classId), name, studentNo);
+            List<GmStudent> studentList = studentService.query(classId, name, studentNo);
             if (!CollectionUtils.isEmpty(studentList)) {
                 if (studentList.size() > 1) {
                     Map<String, List<File>> classMap = new HashMap();
