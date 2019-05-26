@@ -19,15 +19,15 @@ public class GmStudentBodyStatusService {
         return mapper.insert(bodyStatus);
     }
 
-    public boolean findByStudentNoWithOutSelf(String studentNo, Integer id) {
-        return mapper.findByStudentNoWithOutSelf(studentNo, id);
+    public boolean findByStudentNoWithOutSelf(String studentNo, String semester, Integer id) {
+        return mapper.findByStudentNoWithOutSelf(studentNo, semester, id);
     }
 
     public void excelImport(MultipartFile file) {
         List<GmStudentBodyStatus> bodyStatuses = StudentBodyStatusTemplete.temp(file);
         if (!CollectionUtils.isEmpty(bodyStatuses)) {
             bodyStatuses.forEach(bodyStatus -> {
-                boolean isHas = this.findByStudentNoWithOutSelf(bodyStatus.getStudentNo(), null);
+                boolean isHas = this.findByStudentNoWithOutSelf(bodyStatus.getStudentNo(), bodyStatus.getSemester(), null);
                 if (!isHas) this.insert(bodyStatus);
             });
         }

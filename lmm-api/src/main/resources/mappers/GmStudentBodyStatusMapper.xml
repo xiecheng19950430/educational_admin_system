@@ -5,15 +5,16 @@
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="id">
         insert into gm_student_bodystatus
-        (studentNo,name,height,weight,leftVision,rightVision,healthStatus,createAt )
+        (studentNo,name,height,weight,leftVision,rightVision,healthStatus,createAt,semester )
         values
-        (#{studentNo},#{name},#{height},#{weight},#{leftVision},#{rightVision},#{healthStatus},now() )
+        (#{studentNo},#{name},#{height},#{weight},#{leftVision},#{rightVision},#{healthStatus},now(),#{semester} )
     </insert>
     <select id="findByStudentNoWithOutSelf" resultType="boolean">
         select exists (
         select 1
         from gm_student_bodystatus
         where studentNo=#{studentNo}
+        and semester=#{semester}
         <if test="id != null">and id=#{id}</if>
         )
     </select>

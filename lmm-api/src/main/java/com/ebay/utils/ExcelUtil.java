@@ -76,7 +76,11 @@ public class ExcelUtil {
     public static String getSemester() {
         Calendar calendar = Calendar.getInstance();
         int year = calendar.get(Calendar.YEAR);
-        int month = calendar.get(Calendar.WEEK_OF_YEAR);
+        int month = calendar.get(Calendar.MONTH) + 1;
         return year + "-" + (month < 8 ? "1" : "2");
+    }
+
+    public static void main(String[] args) {
+        System.out.println(getSemester());
     }
 }
