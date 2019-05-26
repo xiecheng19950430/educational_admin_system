@@ -59,5 +59,13 @@
         <if test="isDelete != null">,isDelete=#{isDelete}</if>
         WHERE id=#{id}
     </update>
+    <select id="findByNameWithOutSelf" resultType="boolean">
+        select exists (
+        select 1
+        from gm_class
+        where name=#{name}
+        <if test="id != null">and id=#{id}</if>
+        )
+    </select>
 
 </mapper>

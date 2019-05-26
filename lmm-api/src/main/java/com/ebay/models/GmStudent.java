@@ -1,6 +1,6 @@
 package com.ebay.models;
 
-import lombok.Data;
+import lombok.*;
 
 import java.util.Date;
 import java.util.List;
@@ -22,6 +22,11 @@ public class GmStudent {
 
     //超级管理员为superAdmin，其他为角色id（多个用’，'隔开）
     private String role; //系统管理员systemAdmin，教务管理员educationAdmin,教学领导teachLeader，班主任headmaster,教师teacher，学生student
+
+    private String className;
+
+
     //弃用
     private String roleName; //系统管理员systemAdmin，教务管理员educationAdmin,教学领导teachLeader，班主任headmaster,教师teacher，学生student
+
 }

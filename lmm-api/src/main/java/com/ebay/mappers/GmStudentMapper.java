@@ -35,4 +35,5 @@ public interface GmStudentMapper {
 
     List<GmStudent> query(@Param("classId")Integer classId, @Param("name")String name, @Param("studentNo")String studentNo);
 
+    boolean findByStudentNoWithOutSelf(@Param("studentNo")String studentNo, @Param("id")Integer id);
 }

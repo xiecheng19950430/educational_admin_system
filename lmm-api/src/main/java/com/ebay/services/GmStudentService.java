@@ -47,4 +47,8 @@ public class GmStudentService {
     public List<GmStudent> query(Integer classId, String name, String studentNo) {
         return mapper.query(classId, name, studentNo);
     }
+
+    public boolean findByStudentNoWithOutSelf(String studentNo, Integer id) {
+        return mapper.findByStudentNoWithOutSelf(studentNo, id);
+    }
 }

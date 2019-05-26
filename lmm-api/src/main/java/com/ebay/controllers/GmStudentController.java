@@ -42,23 +42,23 @@ public class GmStudentController {
     @RequestMapping("/update")
     @ResponseBody
     public Result update(GmStudent gmStudent) {
+        boolean isHas = service.findByStudentNoWithOutSelf(gmStudent.getStudentNo(), gmStudent.getId());
+        if (isHas) return Result.fail("学号不得重复！");
         GmStudent old = service.findById(gmStudent.getId());
-        int n;
-        if (ObjectUtils.isEmpty(old)) {
-            //新增
-            n = service.insert(gmStudent);
-        } else {
-            //修改
-            BeanUtil.copyNotNullBean(gmStudent, old);
-            n = service.update(old);
-        }
-        return n > 0 ? Result.success() : Result.fail("操作失败");
+        if (ObjectUtils.isEmpty(old)) return Result.fail("学生信息不存在！");
+        //修改
+        BeanUtil.copyNotNullBean(gmStudent, old);
+        service.update(old);
+        return Result.success();
     }
 
     //新增
     @RequestMapping("/insert")
     @ResponseBody
     public Result insert(GmStudent gmStudent) {
+        //学号不得重复
+        boolean isHas = service.findByStudentNoWithOutSelf(gmStudent.getStudentNo(), null);
+        if (isHas) return Result.fail("学号不得重复！");
         gmStudent.setIsDelete(0);
         service.insert(gmStudent);
         return Result.success();
@@ -101,9 +101,6 @@ public class GmStudentController {
         }
         return Result.success();
     }
-
-
-
 
 
 }

@@ -45,6 +45,8 @@ public class GmClassController {
     @RequestMapping("/insert")
     @ResponseBody
     public Result insert(GmClass gmClass) {
+        boolean isHas = service.findByNameWithOutSelf(null, gmClass.getName());
+        if (isHas) return Result.fail("班级名称重名，请前去修改！");
         gmClass.setIsDelete(0);
         service.insert(gmClass);
         return Result.success();
@@ -137,9 +139,7 @@ public class GmClassController {
         GmClass old = service.findById(gmClass.getId());
         if (ObjectUtils.isEmpty(old)) return Result.fail("班级不存在");
         boolean isHas = service.findByNameWithOutSelf(gmClass.getId(), gmClass.getName());
-        if (isHas) {
-            return Result.fail("修改后的班级名称重名，请前去修改！");
-        }
+        if (isHas) return Result.fail("班级名称重名，请前去修改！");
         BeanUtil.copyNotNullBean(gmClass, old);
         int r = service.update(old);
 

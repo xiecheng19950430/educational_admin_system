@@ -33,6 +33,5 @@ public interface GmClassMapper {
     @Select("select gc.name  from gm_class gc left join gm_class_has_gm_teacher cht on cht.gm_class_id=gc.id where cht.gm_teacher_id=#{teacherId} ")
     List<String> queryNameByTeacherId(int teacherId);
 
-    @Select(" select exists (select 1 from gm_class where name=#{name} and id!=#{id})")
     boolean findByNameWithOutSelf(@Param("id") Integer id, @Param("name") String name);
 }

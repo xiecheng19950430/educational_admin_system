@@ -39,7 +39,7 @@ public class ExportService {
             List<GmStudent> studentList = studentService.query(Integer.valueOf(classId), name, studentNo);
             if (!CollectionUtils.isEmpty(studentList)) {
                 if (studentList.size() > 1) {
-                    List<File> files = new ArrayList<>();
+                    Map<String, List<File>> classMap = new HashMap();
                     for (GmStudent student : studentList) {
 
                         File newFile = FileUtil.createNewFile(tempFile, student.getName() + "_" + student.getStudentNo() + ".docx", path);
@@ -58,13 +58,35 @@ public class ExportService {
                         fos.flush();
                         fos.close();
 
-                        files.add(newFile);
+//                        files.add(newFile);
+                        //根据班级 分组
+                        List<File> value = classMap.get(student.getClassName());
+                        if (CollectionUtils.isEmpty(value)) {
+                            value = new ArrayList<>();
+                        }
+                        value.add(newFile);
+                        classMap.put(student.getClassName(), value);
+
                     }
 
-
-                    File zipFile = new File(path, "测试xxx.zip");
-                    zipFile.createNewFile();
-                    FileUtil.zipFiles(files, zipFile);
+                    File zipFile;
+                    //按照班级打包成zip
+                    List<File> classZips = new ArrayList<>();
+                    for (Map.Entry<String, List<File>> entry : classMap.entrySet()) {
+                        zipFile = new File(path, entry.getKey() + "_学生素质报告.zip");
+                        zipFile.createNewFile();
+                        FileUtil.zipFiles(entry.getValue(), zipFile);
+                        classZips.add(zipFile);
+                    }
+                    if (classZips.size() > 1) {
+                        //将班级zip打包成总zip
+                        zipFile = new File(path, "学生素质报告.zip");
+                        zipFile.createNewFile();
+                        FileUtil.zipFiles(classZips, zipFile);
+                    } else {
+                        //只有一个班级
+                        zipFile = classZips.get(0);
+                    }
 
                     this.downZip(request, response, zipFile.getName(), zipFile.getPath());
                 } else {
@@ -75,7 +97,7 @@ public class ExportService {
                     is = new FileInputStream(tempFile);
                     XWPFDocument document = new XWPFDocument(is);
                     QualityReportDocTemplete.temp(document, map);
-                    this.setBrowser(request, response, document, student.getName() + "_" + student.getStudentNo() + ".docx");
+                    this.setBrowser(request, response, document, student.getName() + "_" + student.getStudentNo() + "_学生素质报告.docx");
                 }
             }
 

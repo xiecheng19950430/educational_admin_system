@@ -77,13 +77,22 @@
         WHERE id=#{id}
     </update>
     <select id="query" resultMap="baseResultMap">
-        select *
-        from `gm_student`
+        select s.*,c.name as className
+        from `gm_student s`
+        left join gm_class c on c.id=s.classId
         WHERE isDelete=0
-        <if test="classId != null">and classId=#{classId}</if>
-        <if test="name != null and name != ''">and name=#{name}</if>
-        <if test="studentNo != null and studentNo != ''">and studentNo=#{studentNo}</if>
+        <if test="classId != null">and s.classId=#{classId}</if>
+        <if test="name != null and name != ''">and s.name=#{name}</if>
+        <if test="studentNo != null and studentNo != ''">and s.studentNo=#{studentNo}</if>
 
+    </select>
+    <select id="findByStudentNoWithOutSelf" resultType="boolean">
+        select exists (
+        select 1
+        from gm_student
+        where studentNo=#{studentNo}
+        <if test="id != null">and id=#{id}</if>
+        )
     </select>
 
 
