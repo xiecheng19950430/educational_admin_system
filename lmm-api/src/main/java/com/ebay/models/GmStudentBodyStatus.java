@@ -3,7 +3,7 @@ package com.ebay.models;
 import lombok.*;
 
 import java.util.Date;
-
+//身体状况
 @Data
 public class GmStudentBodyStatus {
     private Integer id;

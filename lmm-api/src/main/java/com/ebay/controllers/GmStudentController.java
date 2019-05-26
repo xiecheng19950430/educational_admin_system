@@ -21,6 +21,8 @@ public class GmStudentController {
     private IimportService iimportService;
     @Autowired
     private GmStudentBodyStatusService studentBodyStatusService;
+    @Autowired
+    private GmStudentAssessmentService studentAssessmentService;
 
     //列表
     @RequestMapping("/list")
@@ -109,6 +111,14 @@ public class GmStudentController {
     @ResponseBody
     public Result importBodyStatus(@RequestParam MultipartFile file) {
         studentBodyStatusService.excelImport(file);
+        return Result.success();
+    }
+
+    //Excel综合能力考核
+    @RequestMapping("/import/assessment")
+    @ResponseBody
+    public Result importAssessment(@RequestParam MultipartFile file) {
+        studentAssessmentService.excelImport(file);
         return Result.success();
     }
 

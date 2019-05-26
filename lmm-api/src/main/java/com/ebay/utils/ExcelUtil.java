@@ -73,6 +73,7 @@ public class ExcelUtil {
         return new DecimalFormat("0").format(d);
     }
 
+    //获取学年学期
     public static String getSemester() {
         Calendar calendar = Calendar.getInstance();
         int year = calendar.get(Calendar.YEAR);
