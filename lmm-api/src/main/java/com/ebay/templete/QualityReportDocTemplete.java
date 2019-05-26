@@ -1,18 +1,18 @@
 package com.ebay.templete;
 
 import com.ebay.common.DateUtil;
+import com.ebay.services.GmStudentService;
 import com.ebay.utils.DocxUtil;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.*;
 
 public class QualityReportDocTemplete {
+
     public static XWPFDocument temp(XWPFDocument document) {
-//            //读取模板
-//            String path = this.getClass().getResource("/temp").getPath();
-//            String tempName = "综合素质报告单.加水印（复件）.docx";
-//            is = new FileInputStream(path + "/" + tempName);
-//            XWPFDocument document = new XWPFDocument(is);
+
+
 
         //计算通用信息 学年学期，假期时间，下学期开学时间，打印日期
         Calendar calendar = Calendar.getInstance();

@@ -52,4 +52,7 @@ public class GmClassService {
         return mapper.queryNameByTeacherId(teacherId);
     }
 
+    public boolean findByNameWithOutSelf(Integer id, String name) {
+        return mapper.findByNameWithOutSelf(id, name);
+    }
 }

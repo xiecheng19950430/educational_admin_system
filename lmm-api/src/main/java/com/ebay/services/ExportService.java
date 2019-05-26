@@ -18,6 +18,11 @@ public class ExportService {
 
     //学生素质报告导出
     public void exportQualityReportDoc(HttpServletRequest request, HttpServletResponse response) {
+        String classId = request.getParameter("classId");
+        String name = request.getParameter("name");
+        String stuNo = request.getParameter("stuNo");
+
+
         InputStream is = null;
         try {
             //读取模板
@@ -27,21 +32,24 @@ public class ExportService {
             File tempFile = new File(path + "/" + tempName);
 
             //查找学生 遍历 生成空白模板
-            File newFile = FileUtil.createNewFile(tempFile, "测试xxx.docx", path);
-
-            //填充参数
-            is = new FileInputStream(newFile);
-            XWPFDocument document = new XWPFDocument(is);
-            QualityReportDocTemplete.temp(document);
-
-            //写入文件
-            FileOutputStream fos = new FileOutputStream(newFile);
-            document.write(fos);
-            fos.flush();
-            fos.close();
-
             List<File> files = new ArrayList<>();
-            files.add(newFile);
+            for (int i = 1; i < 3; i++) {
+                File newFile = FileUtil.createNewFile(tempFile, "测试xx" + i + ".docx", path);
+
+                //填充参数
+                is = new FileInputStream(newFile);
+                XWPFDocument document = new XWPFDocument(is);
+                QualityReportDocTemplete.temp(document);
+
+                //写入文件
+                FileOutputStream fos = new FileOutputStream(newFile);
+                document.write(fos);
+                fos.flush();
+                fos.close();
+
+                files.add(newFile);
+            }
+
 
             File zipFile = new File(path, "测试xxx.zip");
             zipFile.createNewFile();
