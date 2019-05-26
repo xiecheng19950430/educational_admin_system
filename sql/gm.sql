@@ -37,7 +37,6 @@ CREATE TABLE `gm_class` (
 ) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
-
 --
 -- Dumping data for table `gm_class`
 --
@@ -172,6 +171,51 @@ LOCK TABLES `gm_student` WRITE;
 /*!40000 ALTER TABLE `gm_student` DISABLE KEYS */;
 /*!40000 ALTER TABLE `gm_student` ENABLE KEYS */;
 UNLOCK TABLES;
+
+
+--
+-- Table structure for table `gm_student_quality`
+--
+
+DROP TABLE IF EXISTS `gm_student_quality`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `gm_student_quality` (
+  `id` int(11) NOT NULL,
+  `studentNo` int(11) NOT NULL COMMENT '学号',
+  `name` varchar(50) DEFAULT NULL COMMENT '学生姓名',
+  `semester` varchar(11) DEFAULT NULL COMMENT '学年学期 2019-1：2019学年上学期',
+  `moralQualitySelfAssessment` varchar(50) DEFAULT NULL COMMENT '道德素质自评',
+  `moralQualityMutualAssessment` varchar(50) DEFAULT NULL COMMENT '道德素质互评',
+  `moralQualityTeacherAssessment` varchar(50) DEFAULT NULL COMMENT '道德素质老师',
+  `civicQualitySelfAssessment` varchar(50) DEFAULT NULL COMMENT '公民素养自评',
+  `civicQualityMutualAssessment` varchar(50) DEFAULT NULL COMMENT '公民素养互评',
+  `civicQualityTeacherAssessment` varchar(50) DEFAULT NULL COMMENT '公民素养老师',
+  `learningQualitySelfAssessment` varchar(50) DEFAULT NULL COMMENT '学习能力自评',
+  `learningQualityMutualAssessment` varchar(50) DEFAULT NULL COMMENT '学习能力互评',
+  `learningQualityTeacherAssessment` varchar(50) DEFAULT NULL COMMENT '学习能力老师',
+  `commAndCooperSelfAssessment` varchar(50) DEFAULT NULL COMMENT '交流合作自评',
+  `commAndCooperMutualAssessment` varchar(50) DEFAULT NULL COMMENT '交流合作互评'
+  `commAndCooperTeacherAssessment` varchar(50) DEFAULT NULL COMMENT '交流合作老师',
+  `sportsHealthSelfAssessment` varchar(50) DEFAULT NULL COMMENT '运动健康自评',
+  `sportsHealthMutualAssessment` varchar(50) DEFAULT NULL COMMENT '运动健康互评',
+  `sportsHealthTeacherAssessment` varchar(50) DEFAULT NULL COMMENT '运动健康老师',
+  `aestheticExpressionSelfAssessment` varchar(50) DEFAULT NULL COMMENT '审美表现自评',
+  `aestheticExpressionMutualAssessment` varchar(50) DEFAULT NULL COMMENT '审美表现互评',
+  `aestheticExpressionTeacherAssessment` varchar(50) DEFAULT NULL COMMENT '审美表现老师',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `gm_student_quality`
+--
+
+LOCK TABLES `gm_student_quality` WRITE;
+/*!40000 ALTER TABLE `gm_student_quality` DISABLE KEYS */;
+/*!40000 ALTER TABLE `gm_student_quality` ENABLE KEYS */;
+UNLOCK TABLES;
+
 
 --
 -- Table structure for table `gm_teacher`
