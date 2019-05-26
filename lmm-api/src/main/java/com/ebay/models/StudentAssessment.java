@@ -17,4 +17,7 @@ public class StudentAssessment {
     private String rewardsAndPunishRecord;
     //班主任评语
     private String headTeacherComments;
+    // 学年学期 2019-1：2019学年上学期
+    private String semester;
+
 }

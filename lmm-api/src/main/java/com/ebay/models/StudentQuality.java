@@ -7,6 +7,9 @@ public class StudentQuality {
     private Integer id;
     //学号
     private String studentNo;
+    // 学年学期 2019-1：2019学年上学期
+    private String semester;
+
     //姓名
     private String name;
     //道德素质自评

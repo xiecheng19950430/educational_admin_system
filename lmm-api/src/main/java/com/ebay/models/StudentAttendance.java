@@ -13,4 +13,7 @@ public class StudentAttendance {
     private Integer sickLeaveNumberOfDays;
     //事假天数
     private Integer affairLeaveNumberOfDays;
+    // 学年学期 2019-1：2019学年上学期
+    private String semester;
+
 }
