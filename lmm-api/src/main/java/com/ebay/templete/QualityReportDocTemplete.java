@@ -8,6 +8,7 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class QualityReportDocTemplete {
 
@@ -115,7 +116,12 @@ public class QualityReportDocTemplete {
                     score.put("$" + p + 5, "");
                 }
             }
-            score.put("$stuNonPercentageCourse", "xxx");
+            List<GmGradeInfo> infos = termscore.stream().filter(info -> info.getScoreType() == 1).collect(Collectors.toList());
+            StringBuilder nonss = new StringBuilder();
+            for (GmGradeInfo info : infos) {
+                nonss.append(info.getCourseName()).append(":").append(info.getScore()).append(";");
+            }
+            score.put("$stuNonPercentageCourse", nonss.toString());
             DocxUtil.searchAndReplace(document, score);//替换模板中的对应变量。
         }
 
