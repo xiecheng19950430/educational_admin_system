@@ -18,7 +18,6 @@
 --
 -- Table structure for table `gm_class`
 --
-
 DROP TABLE IF EXISTS `gm_class`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
@@ -37,6 +36,7 @@ CREATE TABLE `gm_class` (
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
 
 --
 -- Dumping data for table `gm_class`

@@ -18,4 +18,10 @@
         <if test="id != null">and id=#{id}</if>
         )
     </select>
+    <update id="update">
+        UPDATE gm_student_attendance
+        SET
+        name=#{name},lateNumberOfDays=#{lateNumberOfDays},sickLeaveNumberOfDays=#{sickLeaveNumberOfDays},affairLeaveNumberOfDays=#{affairLeaveNumberOfDays}
+        WHERE studentNo=#{studentNo} and semester=#{semester}
+    </update>
 </mapper>

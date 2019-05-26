@@ -15,6 +15,10 @@ public class GmCourse {
     private Integer isDelete;
     private Integer type;
     private Integer status;
+    //分值类型  1：非百分制 2:百分制 3：等级制
+    private Integer scoreType;
+    //分值
+    private Integer score;
     private String description;
     private Date classAt;
     private Date createAt;

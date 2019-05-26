@@ -22,4 +22,14 @@
         <if test="id != null">and id=#{id}</if>
         )
     </select>
+    <update id="update">
+        UPDATE gm_student_quality
+        SET
+        name=#{name},moralQualitySelfAssessment=#{moralQualitySelfAssessment},moralQualityMutualAssessment=#{moralQualityMutualAssessment},moralQualityTeacherAssessment=#{moralQualityTeacherAssessment},civicQualitySelfAssessment=#{civicQualitySelfAssessment},
+        civicQualityMutualAssessment=#{civicQualityMutualAssessment},civicQualityTeacherAssessment=#{civicQualityTeacherAssessment},learningQualitySelfAssessment=#{learningQualitySelfAssessment},learningQualityMutualAssessment=#{learningQualityMutualAssessment},
+        learningQualityTeacherAssessment=#{learningQualityTeacherAssessment},commAndCooperSelfAssessment=#{commAndCooperSelfAssessment},commAndCooperMutualAssessment=#{commAndCooperMutualAssessment},commAndCooperTeacherAssessment=#{commAndCooperTeacherAssessment},
+        sportsHealthSelfAssessment=#{sportsHealthSelfAssessment},sportsHealthMutualAssessment=#{sportsHealthMutualAssessment},sportsHealthTeacherAssessment=#{sportsHealthTeacherAssessment},aestheticExpressionSelfAssessment=#{aestheticExpressionSelfAssessment},
+        aestheticExpressionMutualAssessment=#{aestheticExpressionMutualAssessment},aestheticExpressionTeacherAssessment=#{aestheticExpressionTeacherAssessment}
+        WHERE studentNo=#{studentNo} and semester=#{semester}
+    </update>
 </mapper>
