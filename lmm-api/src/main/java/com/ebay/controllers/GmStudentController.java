@@ -23,6 +23,8 @@ public class GmStudentController {
     private GmStudentBodyStatusService studentBodyStatusService;
     @Autowired
     private GmStudentAssessmentService studentAssessmentService;
+    @Autowired
+    private GmStudentSubService studentSubService;
 
     //列表
     @RequestMapping("/list")
@@ -91,10 +93,10 @@ public class GmStudentController {
         return Result.success(gmStudent);
     }
 
-    //学生关联班级
-    @RequestMapping("student/bind/class")
+    //绑定班级学生信息
+    @RequestMapping("/bindStudent")
     @ResponseBody
-    public Result bind(int   classId) {
+    public Result bindStudent(int classId) {
         GmStudent gmStudent = service.findByClassId(classId, "student");
         if (ObjectUtils.isEmpty(gmStudent)) {
             gmStudent.setRoleName("student");
@@ -122,7 +124,12 @@ public class GmStudentController {
         return Result.success();
     }
 
-
-
+    //Excel综合能力考核
+    @RequestMapping("/import/sub")
+    @ResponseBody
+    public Result importSub(@RequestParam MultipartFile file) {
+        studentSubService.excelImport(file);
+        return Result.success();
+    }
 
 }

@@ -122,12 +122,12 @@ public class GmClassController {
     @RequestMapping("/latest/no")
     @ResponseBody
     public Result getLatestClassNo() {
-        Integer classNo = service.getLatestClassNo();
+        Integer classNo = service.getLatestClassNo(null);
         if (classNo == null) {
             Calendar cale = Calendar.getInstance();
             int year = cale.get(Calendar.YEAR);
             int yearLast = year % 100;
-            classNo = yearLast * 100;
+            classNo = yearLast * 1000;
         }
         return Result.success(classNo);
     }

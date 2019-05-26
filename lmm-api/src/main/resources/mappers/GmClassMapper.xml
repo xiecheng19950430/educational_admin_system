@@ -64,8 +64,16 @@
         select 1
         from gm_class
         where name=#{name}
+        and isDelete=0
         <if test="id != null">and id=#{id}</if>
+
         )
+    </select>
+    <select id="getLatestClassNo" resultType="java.lang.Integer">
+        select max(cast(classNo as int))
+        from gm_class
+        where 1=1
+        <if test="year != null">and year=#{year}</if>
     </select>
 
 </mapper>

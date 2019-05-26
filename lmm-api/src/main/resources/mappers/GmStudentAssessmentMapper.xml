@@ -1,21 +1,27 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.ebay.mappers.GmStudentBodyStatusMapper">
-    <resultMap id="baseResultMap" type="com.ebay.models.GmStudentBodyStatus"/>
+<mapper namespace="com.ebay.mappers.GmStudentAssessmentMapper">
+    <resultMap id="baseResultMap" type="com.ebay.models.GmStudentAssessment"/>
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="id">
-        insert into gm_student_bodystatus
-        (studentNo,name,height,weight,leftVision,rightVision,healthStatus,createAt,semester )
+        insert into gm_student_assessment
+        (studentNo,name,conduction,performance,rewardsPunishments,comment,createAt,semester )
         values
-        (#{studentNo},#{name},#{height},#{weight},#{leftVision},#{rightVision},#{healthStatus},now(),#{semester} )
+        (#{studentNo},#{name},#{conduction},#{performance},#{rewardsPunishments},#{comment},now(),#{semester} )
     </insert>
-    <select id="findByStudentNoWithOutSelf" resultType="boolean">
+    <select id="verifyWithOutSelf" resultType="boolean">
         select exists (
         select 1
-        from gm_student_bodystatus
+        from gm_student_assessment
         where studentNo=#{studentNo}
         and semester=#{semester}
         <if test="id != null">and id=#{id}</if>
         )
     </select>
+    <update id="update">
+        UPDATE gm_student_assessment
+        SET
+        name=#{name},conduction=#{conduction},performance=#{performance},rewardsPunishments=#{rewardsPunishments},comment=#{comment},updateAt=now()
+        WHERE studentNo=#{studentNo} and semester=#{semester}
+    </update>
 </mapper>

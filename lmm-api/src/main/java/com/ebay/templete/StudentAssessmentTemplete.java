@@ -11,7 +11,7 @@ import java.util.List;
 public class StudentAssessmentTemplete {
     public static List<GmStudentAssessment> temp(MultipartFile file) {
         Workbook workbook = ExcelUtil.getWorkBook(file);
-        List<GmStudentAssessment> bodyStatuses = new ArrayList<>();
+        List<GmStudentAssessment> list = new ArrayList<>();
         if (workbook != null) {
             Sheet sheet = workbook.getSheetAt(0);
             int rows = sheet.getLastRowNum();
@@ -28,10 +28,10 @@ public class StudentAssessmentTemplete {
                     assessment.setComment(ExcelUtil.getCellValue(row.getCell(5)));
 //                    学年学期
                     assessment.setSemester(ExcelUtil.getSemester());
-                    bodyStatuses.add(assessment);
+                    list.add(assessment);
                 }
             }
         }
-        return bodyStatuses;
+        return list;
     }
 }

@@ -25,4 +25,5 @@ public class GmStudentAssessment {
     private String semester;
 
     private Date createAt;
+    private Date updateAt;
 }
