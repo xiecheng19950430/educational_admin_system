@@ -66,21 +66,21 @@ public class GmStudentSubService {
 
     private void copySubToStudent(GmStudentSub sub, GmStudent student) {
         if (StringUtils.isNotBlank(sub.getClassName())) {
-            GmClass gmClass = classService.findByName(sub.getClassName());
+            //2018级1班
+            String[] strs = sub.getClassName().split("级");
+            Calendar calendar = Calendar.getInstance();
+            int year = calendar.get(Calendar.YEAR);
+            int strYear = Integer.valueOf(strs[0]);
+            int diff = year - strYear;
+            String c = strs[1].substring(0, 1);
+            String[] cs = new String[]{"一", "二", "三"};
+            String className = cs[diff] + "（" + c + "）班";
+
+            GmClass gmClass = classService.findByName(className);
             if (ObjectUtils.isEmpty(gmClass)) {
-                //2018级1班
-                String[] strs = sub.getClassName().split("级");
-                Calendar calendar = Calendar.getInstance();
-                int year = calendar.get(Calendar.YEAR);
-                int strYear = Integer.valueOf(strs[0]);
-                int diff = year - strYear;
-                String c = strs[1].substring(0, 1);
-                String[] cs = new String[]{"一", "二", "三"};
-
-                String className = cs[diff] + "（" + c + "）班";
-
-                int classId = classService.init(className, strYear);
-                student.setClassId(classId);
+                gmClass = new GmClass();
+                classService.init(gmClass, className, strYear);
+                student.setClassId(gmClass.getId());
             } else {
                 student.setClassId(gmClass.getId());
             }

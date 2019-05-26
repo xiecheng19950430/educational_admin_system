@@ -60,13 +60,12 @@ public class GmClassService {
         return mapper.findByName(name);
     }
 
-    public int init(String name, int year) {
+    public int init(GmClass gmClass,String name, int year) {
         Integer classNo = this.getLatestClassNo(year);
         if (classNo == null) {
             int yearLast = year % 100;
             classNo = yearLast * 1000;
         }
-        GmClass gmClass = new GmClass();
         gmClass.setClassNo(String.valueOf(classNo + 1));
         gmClass.setYear(year);
         gmClass.setAmount(50);
