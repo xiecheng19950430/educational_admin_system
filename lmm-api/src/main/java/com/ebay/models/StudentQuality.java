@@ -2,8 +2,6 @@ package com.ebay.models;
 
 import lombok.Data;
 
-import java.util.Date;
-
 @Data
 public class StudentQuality {
     private Integer id;
