@@ -39,15 +39,15 @@ public class ExportService {
 
         InputStream is = null;
         try {
-            //读取模板
-            String path = this.getClass().getResource("/temp").getPath();
-            String tempName = "综合素质报告单.加水印.docx";
-
-            File tempFile = new File(path + "/" + tempName);
-
             //查找学生 遍历 生成空白模板
             List<GmStudent> studentList = studentService.query(classId, name, studentNo);
             if (!CollectionUtils.isEmpty(studentList)) {
+                //读取模板
+                String path = this.getClass().getResource("/temp").getPath();
+                String tempName = "综合素质报告单.加水印.docx";
+
+                File tempFile = new File(path + "/" + tempName);
+
                 if (studentList.size() > 1) {
                     Map<String, List<File>> classMap = new HashMap();
                     for (GmStudent student : studentList) {
@@ -223,8 +223,8 @@ public class ExportService {
 
         Map map = new HashMap();
         map.put("student", student);//学生基本信息
-        GmStudentSub sub = studentSubService.findByNoAndSemester(stuNo, sn);
-        map.put("sub", sub);//学生基本信息
+//        GmStudentSub sub = studentSubService.findByNoAndSemester(stuNo, sn);
+//        map.put("sub", sub);//学生基本信息
         map.put("attendance", "xxx");//出勤信息
         map.put("termscore", "xxx");//学科课程学习状况
         map.put("quality", "xxx");//综合素质评价

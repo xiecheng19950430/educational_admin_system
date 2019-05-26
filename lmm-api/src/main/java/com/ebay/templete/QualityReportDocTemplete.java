@@ -4,6 +4,7 @@ import com.ebay.common.DateUtil;
 import com.ebay.models.*;
 import com.ebay.utils.DocxUtil;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import org.springframework.util.ObjectUtils;
 
 import java.util.*;
 
@@ -31,18 +32,22 @@ public class QualityReportDocTemplete {
         DocxUtil.searchAndReplace(document, common);//替换模板中的对应变量。
 
         GmStudent student = (GmStudent) dataMap.get("student");
-        GmStudentSub sub = (GmStudentSub) dataMap.get("sub");
+//        GmStudentSub sub = (GmStudentSub) dataMap.get("sub");
         GmStudentBodyStatus bodyStatus = (GmStudentBodyStatus) dataMap.get("bodystatus");
         //查找学生表 匹配学生基本信息和身体状况
         Map<String, String> stu = new HashMap<>();
-        stu.put("$stuName", student.getName());
-        stu.put("$stuId", student.getStudentNo());
-        stu.put("$stuClassName", student.getClassName());
-        stu.put("$stuHeight", bodyStatus.getHeight());
-        stu.put("$stuWeight", bodyStatus.getWeight());
-        stu.put("$leftVision", bodyStatus.getLeftVision());
-        stu.put("$rightVision", bodyStatus.getRightVision());
-        stu.put("$healthStatus", bodyStatus.getHealthStatus());
+        if (!ObjectUtils.isEmpty(student)) {
+            stu.put("$stuName", student.getName());
+            stu.put("$stuId", student.getStudentNo());
+            stu.put("$stuClassName", student.getClassName());
+        }
+        if (!ObjectUtils.isEmpty(bodyStatus)) {
+            stu.put("$stuHeight", bodyStatus.getHeight());
+            stu.put("$stuWeight", bodyStatus.getWeight());
+            stu.put("$leftVision", bodyStatus.getLeftVision());
+            stu.put("$rightVision", bodyStatus.getRightVision());
+            stu.put("$healthStatus", bodyStatus.getHealthStatus());
+        }
         DocxUtil.searchAndReplace(document, stu);//替换模板中的对应变量。
 
         //查找综合素质评价 匹配综合素质评价
@@ -96,13 +101,15 @@ public class QualityReportDocTemplete {
         DocxUtil.searchAndReplace(document, score);//替换模板中的对应变量。
 
         GmStudentAssessment assessment = (GmStudentAssessment) dataMap.get("assessment");
-        //综合能力考核
-        Map<String, String> ass = new HashMap<>();
-        ass.put("$conductionLevel", assessment.getConduction());
-        ass.put("$specialPerformance", assessment.getPerformance());
-        ass.put("$classTeacherComment", assessment.getComment());
-        ass.put("$rewardsPunishments", assessment.getRewardsPunishments());
-        DocxUtil.searchAndReplace(document, ass);//替换模板中的对应变量。
+        if (!ObjectUtils.isEmpty(assessment)) {
+            //综合能力考核
+            Map<String, String> ass = new HashMap<>();
+            ass.put("$conductionLevel", assessment.getConduction());
+            ass.put("$specialPerformance", assessment.getPerformance());
+            ass.put("$classTeacherComment", assessment.getComment());
+            ass.put("$rewardsPunishments", assessment.getRewardsPunishments());
+            DocxUtil.searchAndReplace(document, ass);//替换模板中的对应变量。
+        }
 
         //查找考勤表 匹配考勤信息
         Map<String, String> att = new HashMap<>();
