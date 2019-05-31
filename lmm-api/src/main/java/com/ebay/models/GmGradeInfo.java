@@ -37,4 +37,6 @@ public class GmGradeInfo {
 
     private Integer scoreType;
     private Integer score;
+
+    private String semester;
 }

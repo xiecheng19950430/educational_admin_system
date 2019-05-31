@@ -1,5 +1,6 @@
 package com.ebay.utils;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.xwpf.usermodel.*;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTblPr;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.STJc;
@@ -55,7 +56,8 @@ public class DocxUtil {
                              * 参数0表示生成的文字是要从哪一个地方开始放置,设置文字从位置0开始
                              * 就可以把原变量替换掉
                              */
-                            run.get(i).setText(map.get(key), 0);
+                            String text = StringUtils.isBlank(map.get(key)) ? " " : map.get(key);
+                            run.get(i).setText(text, 0);
                         }
                     }
                 }
@@ -72,7 +74,8 @@ public class DocxUtil {
                         for (Map.Entry<String, String> e : map.entrySet()) {
                             if (cell.getText().equals(e.getKey())) {//如果单元格中的变量和‘键’相等，就用‘键’所对应的‘值’代替。
                                 cell.removeParagraph(0);//所以这里就要求每一个单元格只能有唯一的变量。
-                                cell.setText(e.getValue());
+                                String text = StringUtils.isBlank(e.getValue()) ? " " : e.getValue();
+                                cell.setText(text);
                             }
                         }
                     }

@@ -6,6 +6,7 @@ import com.ebay.mappers.ExcelMapper;
 import com.ebay.models.GmCourse;
 import com.ebay.models.GmGradeInfo;
 import com.ebay.models.GmTeacher;
+import com.ebay.utils.ExcelUtil;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -257,6 +258,7 @@ public class IimportService {
                 //学年
                 Integer schoolYear = Integer.parseInt(getCellValue(row.getCell(11)));
                 gradeInfo.setSchoolYear(schoolYear);
+                gradeInfo.setSemester(ExcelUtil.getSemester());
                 gradeInfoList.add(gradeInfo);
             }
         }
