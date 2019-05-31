@@ -110,6 +110,17 @@ create table gm_student_bodystatus
     createAt     timestamp    null,
     updateAt     timestamp    null
 );
+create table gm_student_attendance
+(
+    id           int auto_increment
+        primary key,
+    studentNo    varchar(50)  null,
+    name         varchar(50)  null,
+    lateNumberOfDays       int  null,
+    sickLeaveNumberOfDays       int  null,
+    affairLeaveNumberOfDays   int  null,
+    semester     varchar(50)  null,
+);
 
 create table gm_student_sub
 (
