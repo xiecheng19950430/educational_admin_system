@@ -5,12 +5,14 @@ import com.ebay.mappers.GmStudentAttendanceMapper;
 import com.ebay.models.GmStudentAttendance;
 import com.ebay.templete.StudentAttendanceTemplete;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
+@Service
 public class GmStudentAttendanceService {
     @Autowired
     private GmStudentAttendanceMapper mapper;
