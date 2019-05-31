@@ -137,9 +137,15 @@ public class QualityReportDocTemplete {
         if (ObjectUtils.isEmpty(attendance)) attendance = new GmStudentAttendance();
         att.put("本学期上课$allDay", "本学期上课" + 0);
         att.put("该生实际上课$att", "该生实际上课" + 0);
-        att.put("$beL", attendance.getLateNumberOfDays().toString());
-        att.put("$sickL", attendance.getSickLeaveNumberOfDays().toString());
-        att.put("$l", attendance.getAffairLeaveNumberOfDays().toString());
+        String bel = "";
+        if (attendance.getLateNumberOfDays() != null) bel = attendance.getLateNumberOfDays().toString();
+        att.put("$beL", bel);
+        String sickL = "";
+        if (attendance.getSickLeaveNumberOfDays() != null) sickL = attendance.getSickLeaveNumberOfDays().toString();
+        att.put("$sickL", sickL);
+        String l = "";
+        if (attendance.getAffairLeaveNumberOfDays() != null) sickL = attendance.getAffairLeaveNumberOfDays().toString();
+        att.put("$l", l);
         DocxUtil.searchAndReplace(document, att);//替换模板中的对应变量。
         DocxUtil.searchAndReplace(document, att);//替换模板中的对应变量。
 
